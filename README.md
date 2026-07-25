@@ -1,6 +1,10 @@
 # 🐝 HIVEN
 
 <p align="center">
+  <img src="logo_app.png" alt="Hiven Logo" width="120px" style="border-radius: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-bottom: 20px;" />
+</p>
+
+<p align="center">
   <img src="hiven_banner.png" alt="Hiven Banner" width="100%" style="border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.5);" />
 </p>
 
