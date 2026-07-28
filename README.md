@@ -30,15 +30,11 @@ En lugar de cobrar cuotas mensuales o requerir servidores locales con GPUs costo
 ### 📹 Vídeo en Acción: Respuesta Automática en GitHub Issues (`@hiven`)
 Observa cómo **Hiven** recibe una instrucción en una Issue de GitHub, procesa la tarea con el enjambre multi-agente y crea la Pull Request verificada:
 
-<p align="center">
-  <video src="https://raw.githubusercontent.com/amglogicalis/hiven-repo-public/main/demo_issue.mp4" controls width="100%" style="border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.5);">
-    Tu navegador no soporta el reproductor integrado. <a href="https://raw.githubusercontent.com/amglogicalis/hiven-repo-public/main/demo_issue.mp4">Ver vídeo demo_issue.mp4</a>
-  </video>
-</p>
 
-<p align="center">
-  <a href="https://raw.githubusercontent.com/amglogicalis/hiven-repo-public/main/demo_issue.mp4">▶️ <strong>Haga clic aquí para ver/descargar el vídeo de demostración completo (demo_issue.mp4)</strong></a>
-</p>
+
+https://github.com/user-attachments/assets/f50d9408-4885-4238-8c82-483eeb1b65b1
+
+
 
 ---
 
