@@ -93,6 +93,26 @@ Hiven está diseñado bajo el principio de **Cero Confianza en la Generación de
 
 ---
 
+## 📥 Instalación y Configuración Inicial (Paso a Paso)
+
+Para empezar a usar Hiven en tus repositorios, solo necesitas completar 2 pasos sencillos:
+
+### Paso 1: Instalar la GitHub App de Hiven
+1. Haz clic en el enlace de instalación de la **[GitHub App de Hiven Agent](https://github.com/apps/hiven-agent)**.
+2. Selecciona tu cuenta de usuario u organización.
+3. Concede permisos de acceso a los repositorios donde deseas que Hiven trabaje (puedes elegir repositorios específicos o todos).
+
+### Paso 2: Configurar tu Repositorio Worker Efímero (`.hiven-komb-worker`)
+Hiven ejecuta los enjambres de forma gratuita utilizando runners efímeros de GitHub Actions:
+
+- **En Organizaciones de GitHub**: Hiven creará y aprovisionará automáticamente el repositorio privado `.hiven-komb-worker` en tu organización en el primer uso.
+- **En Cuentas Personales**: 
+  1. Crea un repositorio privado en tu cuenta de GitHub llamado exactamente **`.hiven-komb-worker`**.
+  2. Asegúrate de otorgar acceso a la GitHub App de Hiven sobre este nuevo repositorio privado.
+  3. ¡Listo! Hiven inicializará las plantillas de runners y empezará a procesar tus tareas.
+
+---
+
 ## 🚀 Guía de Uso
 
 ### Opción A: Desde la Consola Web
@@ -105,7 +125,7 @@ Hiven está diseñado bajo el principio de **Cero Confianza en la Generación de
    ```text
    /hiven Añade una función formatCurrency(amount) a app.js con validaciones y JSDoc.
    ```
-2. **Hiven** actualizará el progreso en tiempo real y abrirá automáticamente la Pull Request.
+2. **Hiven** actualizará el progreso en tiempo real en la discusión y abrirá automáticamente la Pull Request.
 
 ---
 
