@@ -63,6 +63,14 @@ Para obtener los mejores resultados del Enjambre de Kōmbees, sigue estas recome
 | **Comportamiento Deseado** | *"Añade un middleware JWT que retorne HTTP 401 si no hay token."* | *"Haz algo con auth."* |
 | **Conservación** | No te preocupes por borrados accidentales: el **Code Deletion Guard** de Hiven protege automáticamente tu código preexistente. | Pedir borrados masivos sin usar palabras clave explícitas como `eliminar` o `vaciar`. |
 
+### 🔄 ¿Qué hacer si una tarea no pasa la validación del Sandbox?
+
+Si una ejecución se completa indicando que no se generó código válido (lo que significa que las defensas de seguridad de Hiven frenaron el cambio para proteger tu repositorio de código roto), dispones de 3 opciones:
+
+1. **Re-promptear con mayor especificidad**: Indica explícitamente qué funciones, exportaciones o tests preexistentes no deben alterarse (ej: *"Añade divide(a,b) a test_math.js conservando las aserciones del final del archivo"*).
+2. **Re-intentar directamente**: Gracias al **Federated Pattern Learning**, Hiven registra automáticamente el error en su memoria federada. En el siguiente intento, el arquitecto inyectará reglas `Do's and Don'ts` para evitar repetir el mismo fallo.
+3. **Subdividir la tarea**: Para cambios grandes o complejos, divide la instrucción en 2 o 3 peticiones atómicas más pequeñas.
+
 ---
 
 ## ⚡ V2 Engine Architecture & Safety Core
