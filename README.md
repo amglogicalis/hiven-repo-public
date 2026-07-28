@@ -33,6 +33,27 @@ En lugar de cobrar cuotas mensuales o requerir servidores locales con GPUs poten
 
 ---
 
+## ⚔️ ¿Por qué elegir Hiven? (Ventaja Competitiva & Propuesta de Valor)
+
+Frente a asistentes de código tradicionales (como GitHub Copilot o Cursor) o agentes cerrados de suscripción (como Devin o Sweep), **Hiven** ofrece una combinación única de **cómputo gratuito, arquitectura multi-agente y seguridad activa**:
+
+| Característica / Ventaja | 🐝 Hiven Agent | 🤖 Copilot / Cursor | 💸 Devin / Sweep / SaaS |
+|---|---|---|---|
+| **Coste de Cómputo** | 🟢 **$0 / mes** (Usa runners efímeros gratuitos) | 🟡 $10 - $20 / mes | 🔴 $20 - $500 / mes |
+| **Arquitectura** | 🟢 **Enjambre Multi-Agente** (Arquitecto + Drones + Validador) | 🔴 Mono-agente lineal (1 solo turno) | 🟡 Agente único centralizado |
+| **Seguridad de Código** | 🟢 **Shadow Sandbox + Deletion Guard** (Protege tu repo) | 🔴 Sin sandbox previo; genera alucinaciones | 🟡 Limitado a tests estáticos |
+| **Auto-Corrección** | 🟢 **3 Ciclos de Autocorrección** + Fallback a `git HEAD` | 🔴 No valida en tiempo de ejecución | 🟡 Corrección básica |
+| **Memoria Federada** | 🟢 **Pattern Learning** (Aprende de fallos previos en Redis) | 🔴 Sin memoria entre sesiones | 🔴 Sin aprendizaje federado |
+| **Privacidad & Control** | 🟢 **100% Open Source** (Tus runners, tus datos) | 🔴 Código procesado en nubes privadas | 🔴 Datos en servidores de terceros |
+
+### 🏆 Las 3 Razones Clave para Usar Hiven
+
+1. **La Fuerza del Enjambre (Swarm Architecture)**: Un solo agente de IA (como Copilot) suele alucinar cuando se le pide un cambio grande. Hiven divide la tarea en micro-particiones ejecutadas por un enjambre de Kōmbees en paralelo, eligiendo únicamente al candidato ganador.
+2. **Cero Riesgo para tu Repositorio**: Gracias al **Shadow Sandbox Execution** y al **Code Deletion Guard**, Hiven jamás abrirá una PR con código roto o que borre tus archivos preexistentes.
+3. **Cero Coste Operativo ($0)**: Despliega un laboratorio neuronal agéntico completo sin pagar servidores ni GPUs, aprovechando los minutos gratuitos de GitHub Actions.
+
+---
+
 ## 🚀 Guía de Inicio Rápido
 
 ### Opción A: Desde la Consola Web (Zero-Config)
