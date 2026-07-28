@@ -2,10 +2,6 @@
   <img src="logo_app.png" alt="Hiven Logo" width="140px" style="border-radius: 28px; box-shadow: 0 8px 24px rgba(0,0,0,0.4); margin-bottom: 20px;" />
 </p>
 
-<p align="center">
-  <img src="hiven_banner.png" alt="Hiven Banner" width="100%" style="border-radius: 14px; box-shadow: 0 10px 35px rgba(0,0,0,0.6);" />
-</p>
-
 <h1 align="center">🐝 Hiven Agent</h1>
 
 <p align="center">
