@@ -25,6 +25,31 @@ En lugar de cobrar cuotas mensuales o requerir servidores locales con GPUs costo
 
 ---
 
+## 🎬 Demostración en Vivo (Demo Showcase)
+
+### 📹 Vídeo en Acción: Respuesta Automática en GitHub Issues (`@hiven`)
+Observa cómo **Hiven** recibe una instrucción en una Issue de GitHub, procesa la tarea con el enjambre multi-agente y crea la Pull Request verificada:
+
+<p align="center">
+  <video src="demo_issue.mp4" controls width="100%" style="border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.5);">
+    Tu navegador no soporta la reproducción de vídeos HTML5.
+  </video>
+</p>
+
+---
+
+### 🖥️ Consola Web de Hiven: Evolución del Enjambre en Tiempo Real
+
+<p align="center">
+  <strong>1. Estado Inicial (Lanzando el Swarm)</strong><br>
+  <img src="demo_console_web_1.png" alt="Fase Inicial Consola Web" width="100%" style="border-radius: 10px; box-shadow: 0 6px 20px rgba(0,0,0,0.3); margin-top: 8px; margin-bottom: 20px;" />
+  <br><br>
+  <strong>2. Estado Final (Swarm Completado & Pull Request Creada)</strong><br>
+  <img src="demo_console_web_2.png" alt="Fase Final Consola Web" width="100%" style="border-radius: 10px; box-shadow: 0 6px 20px rgba(0,0,0,0.3); margin-top: 8px;" />
+</p>
+
+---
+
 ## ⚔️ ¿Por qué elegir Hiven? (Ventaja Competitiva)
 
 | Característica / Ventaja | 🐝 Hiven Agent | 🤖 Copilot / Cursor | 💸 Devin / Sweep / SaaS |
