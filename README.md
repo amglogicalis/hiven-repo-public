@@ -23,6 +23,11 @@
 
 En lugar de cobrar cuotas mensuales o requerir servidores locales con GPUs costosas, **Hiven** coordina enjambres distribuidos de **Kōmbees** (Arquitectos, Codificadores, Validadores y Consolidadores) que se ejecutan de manera efímera y paralela en la infraestructura de GitHub Actions.
 
+> [!IMPORTANT]
+> **⏱️ Tiempo de Ejecución Promedio (Asíncrono)**:
+> Debido a que Hiven ejecuta modelos de IA en runners efímeros **100% gratuitos de GitHub Actions**, el tiempo medio de ejecución de un Swarm oscila entre **3 y 8 minutos** (según el volumen del repositorio y la complejidad del prompt).
+> **No es necesario mantener la pestaña abierta**: Hiven trabaja en segundo plano de forma asíncrona. Puedes cerrar la consola o continuar tu trabajo; recibirás la notificación con la Pull Request creada en tu repositorio en cuanto el enjambre finalice.
+
 ---
 
 ## 🎬 Demostración en Vivo (Demo Showcase)
@@ -185,6 +190,11 @@ Si una ejecución indica que no se generó código válido (el Sandbox frenó el
 ### 🔴 Caso 3: `Worker Repository Not Found`
 * **Causa**: Primera vez usando Hiven en tu cuenta.
 * **Solución**: Crea un repositorio privado llamado **`.hiven-komb-worker`** e instala la App de Hiven en él.
+
+### ⏱️ Caso 4: Tiempo de Ejecución Prolongado (3 a 8 minutos de media)
+* **Comportamiento**: El Swarm permanece en la Fase 2 de Ejecución durante varios minutos.
+* **Explicación**: Los runners efímeros de GitHub Actions son **100% gratuitos**, por lo que procesar las variantes de modelos de lenguaje en CPUs toma entre 3 y 8 minutos de media.
+* **Solución**: No requiere ninguna acción por tu parte. El proceso es **100% asíncrono**; puedes cerrar la sesión y recibirás la Pull Request creada automáticamente en GitHub.
 
 ---
 
