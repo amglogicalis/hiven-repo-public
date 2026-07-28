@@ -10,9 +10,8 @@
 </p>
 
 <p align="center">
-  <a href="#-v2-engine-architecture--safety-core"><img src="https://img.shields.io/badge/Engine-V2%20Architecture-brightgreen?style=for-the-badge&logo=githubactions&logoColor=white" alt="V2 Engine"></a>
-  <a href="#-post-production-benchmark-results"><img src="https://img.shields.io/badge/Benchmark-100%25%20Pass%20Rate-blue?style=for-the-badge&logo=fastapi&logoColor=white" alt="100% Benchmark"></a>
-  <a href="#-gu%C3%ADa-de-diagn%C3%B3stico-y-resoluci%C3%B3n-de-errores-troubleshooting"><img src="https://img.shields.io/badge/Safety-Deletion%20Guard-orange?style=for-the-badge&logo=shield&logoColor=white" alt="Deletion Guard"></a>
+  <a href="#-arquitectura-técnica-y-funcionamiento-del-enjambre"><img src="https://img.shields.io/badge/Architecture-Distributed%20Swarm-brightgreen?style=for-the-badge&logo=githubactions&logoColor=white" alt="Swarm Architecture"></a>
+  <a href="#-protección-de-código-y-sandbox-aislado"><img src="https://img.shields.io/badge/Safety-Shadow%20Sandbox-orange?style=for-the-badge&logo=shield&logoColor=white" alt="Shadow Sandbox"></a>
   <a href="LICENSE.md"><img src="https://img.shields.io/badge/License-MIT-purple?style=for-the-badge" alt="License"></a>
 </p>
 
@@ -20,168 +19,127 @@
 
 ## 💡 ¿Qué es Hiven Agent?
 
-**Hiven Agent** es una plataforma de ingeniería de software multi-agente descentralizada y de código abierto. Ha sido diseñada para ser la alternativa **libre y gratuita** a servicios costosos de IA agéntica.
+**Hiven Agent** es una plataforma de ingeniería de software multi-agente descentralizada y de código abierto. Ha sido diseñada para ser la alternativa libre a servicios costosos de IA agéntica.
 
-En lugar de cobrar cuotas mensuales o requerir servidores locales con GPUs potentes, **Hiven** coordina enjambres distribuidos de **Kōmbees** (Arquitectos, Codificadores, Validadores y Consolidadores) que se ejecutan enteramente en la **infraestructura gratuita de GitHub Actions**.
-
-> [!NOTE]
-> Hiven trabaja de forma **asíncrona**: tú lanzas una tarea desde la Consola Web o comentando en un Issue de GitHub, y Hiven trabaja en segundo plano hasta entregarte una Pull Request limpia y verificada.
+En lugar de cobrar cuotas mensuales o requerir servidores locales con GPUs costosas, **Hiven** coordina enjambres distribuidos de **Kōmbees** (Arquitectos, Codificadores, Validadores y Consolidadores) que se ejecutan de manera efímera y paralela en la infraestructura de GitHub Actions.
 
 ---
 
-## ⚔️ ¿Por qué elegir Hiven? (Ventaja Competitiva & Propuesta de Valor)
-
-Frente a asistentes de código tradicionales (como GitHub Copilot o Cursor) o agentes cerrados de suscripción (como Devin o Sweep), **Hiven** ofrece una combinación única de **cómputo gratuito, arquitectura multi-agente y seguridad activa**:
+## ⚔️ ¿Por qué elegir Hiven? (Ventaja Competitiva)
 
 | Característica / Ventaja | 🐝 Hiven Agent | 🤖 Copilot / Cursor | 💸 Devin / Sweep / SaaS |
 |---|---|---|---|
-| **Coste de Cómputo** | 🟢 **$0 / mes** (Usa runners efímeros gratuitos) | 🟡 $10 - $20 / mes | 🔴 $20 - $500 / mes |
-| **Arquitectura** | 🟢 **Enjambre Multi-Agente** (Arquitecto + Drones + Validador) | 🔴 Mono-agente lineal (1 solo turno) | 🟡 Agente único centralizado |
-| **Seguridad de Código** | 🟢 **Shadow Sandbox + Deletion Guard** (Protege tu repo) | 🔴 Sin sandbox previo; genera alucinaciones | 🟡 Limitado a tests estáticos |
-| **Auto-Corrección** | 🟢 **3 Ciclos de Autocorrección** + Fallback a `git HEAD` | 🔴 No valida en tiempo de ejecución | 🟡 Corrección básica |
-| **Memoria Federada** | 🟢 **Pattern Learning** (Aprende de fallos previos en Redis) | 🔴 Sin memoria entre sesiones | 🔴 Sin aprendizaje federado |
-| **Privacidad & Control** | 🟢 **100% Open Source** (Tus runners, tus datos) | 🔴 Código procesado en nubes privadas | 🔴 Datos en servidores de terceros |
-
-### 🏆 Las 3 Razones Clave para Usar Hiven
-
-1. **La Fuerza del Enjambre (Swarm Architecture)**: Un solo agente de IA (como Copilot) suele alucinar cuando se le pide un cambio grande. Hiven divide la tarea en micro-particiones ejecutadas por un enjambre de Kōmbees en paralelo, eligiendo únicamente al candidato ganador.
-2. **Cero Riesgo para tu Repositorio**: Gracias al **Shadow Sandbox Execution** y al **Code Deletion Guard**, Hiven jamás abrirá una PR con código roto o que borre tus archivos preexistentes.
-3. **Cero Coste Operativo ($0)**: Despliega un laboratorio neuronal agéntico completo sin pagar servidores ni GPUs, aprovechando los minutos gratuitos de GitHub Actions.
+| **Coste de Cómputo** | 🟢 **$0 / mes** (Runners efímeros) | 🟡 $10 - $20 / mes | 🔴 $20 - $500 / mes |
+| **Arquitectura** | 🟢 **Enjambre Multi-Agente Competitivo** | 🔴 Mono-agente lineal (1 solo turno) | 🟡 Agente único centralizado |
+| **Seguridad de Código** | 🟢 **Shadow Sandbox + Deletion Guard** | 🔴 Sin sandbox previo | 🟡 Limitado a tests estáticos |
+| **Auto-Corrección** | 🟢 **Ciclos de Autocorrección** + Fallback | 🔴 No valida en tiempo de ejecución | 🟡 Corrección básica |
+| **Privacidad & Control** | 🟢 **100% Open Source** | 🔴 Código en nubes privadas | 🔴 Datos en servidores de terceros |
 
 ---
 
-## 🚀 Guía de Inicio Rápido
+## 🔬 Arquitectura Técnica y Funcionamiento del Enjambre
 
-### Opción A: Desde la Consola Web (Zero-Config)
-1. Inicia sesión en la **Consola Web de Hiven** con tu cuenta de GitHub.
-2. Selecciona tu repositorio en el desplegable.
-3. Escribe la instrucción de lo que deseas construir.
-4. Haz clic en **Launch Swarm 🚀**. Verás la telemetría pasar en tiempo real por las 4 Fases (Context, Execution, Validation, Consolidation).
+El motor de Hiven funciona como un pipeline de 4 Fases Orquestadas mediante una arquitectura **Master-Worker (Queen/Drone)**:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User as Developer / Console / Issue
+    participant Queen as Hiven Queen (Orchestrator Service)
+    participant Worker as Worker Drone (GitHub Actions Swarm)
+    participant GH as Target Repository
+
+    User->>Queen: Envía Instrucción (@hiven / Web Console)
+    Queen->>Queen: Fase 0: Extracción Determinista de Hechos (Deps, Tests, Entry point)
+    Queen->>Worker: Dispara evento en paralelo (repository_dispatch)
+    Worker->>Worker: Fase 1 (Architect): Planificación & Partición en Sub-Swarms
+    Worker->>Worker: Fase 2 (Coders): 10 Kōmbees Paralelos & Diversidad de Modelos
+    Worker->>Worker: Fase 3 (Validators): Sandbox Aislado & Deletion Guard
+    Worker->>GH: Fase 4 (Consolidator): Fusiona candidatos ganadores & abre PR
+    Worker-->>User: Actualiza telemetría en vivo y comentario en Issue
+```
+
+### 🧠 ¿Cómo se dividen las tareas en la Fase 1 y Fase 2?
+
+Cuando le pides una tarea al Swarm, el trabajo no se procesa de forma ciega. Sigue un modelo de **Partición Inteligente y Ejecución Competitiva**:
+
+1. **Fase 1 (Architect Kōmbee - Planificación)**:
+   - El Arquitecto analiza la instrucción y la estructura del repositorio.
+   - Si la tarea involucra un solo archivo o función, la asigna directamente.
+   - Si la tarea es **multi-archivo** (ej. frontend + backend), el Arquitecto divide la petición en **Particiones Lógicas de Trabajo** (Grupo 1: Lógica/Backend, Grupo 2: UI/Estilos).
+
+2. **Fase 2 (Coder Drones - 10 Nodos en Paralelo)**:
+   - Los **10 Kōmbees** se distribuyen entre los grupos de particiones.
+   - **Competencia entre Nodos**: Dentro de cada grupo, varios Kōmbees trabajan **en paralelo utilizando diferentes combinaciones de modelos (SLMs/LLMs) y temperaturas**.
+   - Esto garantiza que, incluso si un modelo comete un error de sintaxis, otros nodos del mismo grupo generen variantes perfectas.
+
+3. **Fase 3 (Validation Kōmbees - Shadow Sandbox)**:
+   - Cada uno de los 10 nodos prueba su código en tiempo de ejecución (`node`, `npm test`, compiladores) dentro de un contenedor estéril e independiente.
+   - Si un nodo rompe los tests o borra más del 50% de un archivo existente, ese nodo queda descalificado.
+
+4. **Fase 4 (Consolidation Kōmbees - Fusión)**:
+   - El Consolidador evalúa solo los nodos que pasaron la validación al 100%.
+   - Selecciona al **candidato ganador de cada grupo de trabajo** y fusiona sus cambios en una **única Pull Request limpia**.
+
+---
+
+## 🛡️ Protección de Código y Sandbox Aislado
+
+Hiven está diseñado bajo el principio de **Cero Confianza en la Generación de IA**:
+
+1. **Shadow Sandbox Execution**: El código generado por los agentes se ejecuta y valida antes de tocar tu repositorio. Si los tests del proyecto fallan, el código no se aprueba.
+2. **Code Deletion Guard**: Si un modelo intenta reescribir un archivo grande y elimina accidentalmente funciones preexistentes, el guardián de código frena la operación y restaura el archivo desde `git HEAD`.
+3. **Memoria Colectiva (Pattern Learning)**: Si una ejecución no pasa el sandbox, el motivo del fallo se registra en la memoria federada para que los siguientes intentos aprendan qué patrones evitar.
+
+---
+
+## 🚀 Guía de Uso
+
+### Opción A: Desde la Consola Web
+1. Inicia sesión en la **Consola Web de Hiven**.
+2. Selecciona tu repositorio destino.
+3. Escribe la instrucción y haz clic en **Launch Swarm 🚀**.
 
 ### Opción B: Desde GitHub Issues o Pull Requests (`@hiven` / `/hiven`)
-1. Instala la **GitHub App de Hiven** en tu repositorio.
-2. Comenta en cualquier Issue o PR:
+1. Comenta en cualquier Issue o PR de tu repositorio:
    ```text
    /hiven Añade una función formatCurrency(amount) a app.js con validaciones y JSDoc.
    ```
-3. **Hiven** responderá en el hilo actualizando el estado de las 4 Fases y abrirá automáticamente la Pull Request.
+2. **Hiven** actualizará el progreso en tiempo real y abrirá automáticamente la Pull Request.
 
 ---
 
-## 💡 Guía de Prompting: Cómo Escribir Instrucciones Efectivas
+## 💡 Guía de Prompting: Buenas Prácticas
 
 | Principio | 🟢 Buena Práctica | 🔴 A Evitar |
 |---|---|---|
-| **Claridad y Alcance** | *"Añade una función `divide(a, b)` a `test_math.js` con validación de cero y JSDoc."* | *"Mejora el código."* (Demasiado vago). |
-| **Nombres de Archivo** | Especifica los archivos si los conoces (`app.js`, `style.css`). | Esperar que el bot adivine el archivo en repos de +500 archivos. |
-| **Comportamiento** | *"Añade un middleware JWT que devuelva HTTP 401 si falta el header."* | *"Haz algo con seguridad."* |
-| **Conservación** | No temas borrados accidentales: el **Code Deletion Guard** protege tu código preexistente. | Pedir borrados masivos sin usar palabras clave explícitas como `eliminar` o `vaciar`. |
+| **Claridad y Alcance** | *"Añade una función `divide(a, b)` a `math.js` con validación de cero y JSDoc."* | *"Mejora el código."* (Demasiado vago). |
+| **Nombres de Archivo** | Especifica los archivos si los conoces (`app.js`, `style.css`). | Esperar que el bot adivine el archivo en repos gigantes. |
+| **Conservación** | No temas borrados: el **Code Deletion Guard** protege tu código preexistente. | Pedir borrados masivos sin usar palabras clave explícitas como `eliminar`. |
 
----
+### 🔄 ¿Qué hacer si una tarea no pasa la validación del Sandbox?
 
-## ⚡ V2 Engine Architecture & Safety Core
+Si una ejecución indica que no se generó código válido (el Sandbox frenó el cambio para proteger tu repositorio de código roto):
 
-El motor V2 de Hiven integra 6 capas de seguridad y optimización de contexto:
-
-| Módulo | Característica | Descripción de Funcionamiento |
-|---|---|---|
-| 🧠 **Mejora 1** | **Federated Pattern Learning** | Memoria colectiva en Redis (`hive_patterns:{ext}`) que inyecta Do's and Don'ts de ejecuciones previas. |
-| 🔍 **Mejora 2** | **Deterministic Context Extraction** | Extracción determinista en Fase 0 de lenguajes, frameworks, dependencias y scripts sin alucinación LLM. |
-| ⚡ **Mejora 3** | **Local Offline RAG (TF-IDF)** | Indexador por relevancia que selecciona solo los top 3-8 archivos más importantes, reduciendo el contexto 4x. |
-| 🛡️ **Mejora 4** | **Code Deletion Guard & Self-Correction** | Bloquea encogimientos indebidos (>50%) y ejecuta hasta 3 ciclos de auto-corrección con fallback a `git HEAD`. |
-| 🐝 **Mejora 5** | **Parallel Sub-Swarms** | Divide tareas multi-archivo en grupos de sub-swarms paralelos y consolida los ganadores por grupo. |
-| 🧪 **Mejora 6** | **Shadow Sandbox Execution** | Ejecución de pruebas unitarias (`node`, `npm test`) en un contenedor aislado previo a la Pull Request. |
-
----
-
-## 📊 Post-Production Benchmark Results
-
-Hiven V2 fue evaluado empíricamente en 5 escenarios reales de post-producción:
-
-| Scenario | Tarea / Desafío | Repositorio / Archivos | Estatus | Resultado de Verificación |
-| :--- | :--- | :--- | :---: | :--- |
-| **B1** | **Single-File JS Refactor** | `testing/test_math.js` | ✅ PASADO | JSDoc añadido preservando aserciones existentes. [PR #9](https://github.com/amglogicalis/testing/pull/9) |
-| **B2** | **Creación de Nuevo Módulo** | `testing/logger.js` | ✅ PASADO | Módulo independiente con exportaciones completas. |
-| **B3** | **Code Deletion Defense** | `testing/src/zenon.js` (181KB) | ✅ PASADO | **Deletion Guard Activo**: Protegió 181KB de código heredado sin truncamiento. [PR #10](https://github.com/amglogicalis/testing/pull/10) |
-| **B4** | **Parallel Sub-Swarms** | `testing/style.css`, `index.html` | ✅ PASADO | Partición paralela multi-archivo y consolidación de candidatos. |
-| **B5** | **GitHub Webhook Trigger** | `testing/app.js` | ✅ PASADO | Disparo por webhook con PR creada y validación de parámetros. [PR #8](https://github.com/amglogicalis/testing/pull/8) |
-
-* **Tasa de éxito funcional (PRs Listos):** **100.0% (5/5 escenarios)**
-* **Tasa de preservación de código:** **100.0% (0 borrados accidentales)**
+1. **Re-promptear especificando límites**: Indica explícitamente qué funciones o tests conservar (ej: *"Añade divide(a,b) a math.js conservando las aserciones preexistentes"*).
+2. **Re-intentar directamente**: Gracias al **Pattern Learning**, el sistema recordará el fallo anterior e inyectará reglas de corrección automáticas.
+3. **Subdividir la tarea**: Para cambios complejos, divide la instrucción en 2 o 3 micro-peticiones atómicas.
 
 ---
 
 ## 🛠️ Guía de Diagnóstico y Resolución de Errores (Troubleshooting)
 
-A continuación se detallan los casos de error más comunes del Swarm, la causa exacta y cómo resolverlos en segundos:
-
-### 🔴 Caso 1: `All 10 nodes failed validation. Check logs for details.`
-> **Síntoma**: La Consola Web muestra que la Fase 4 terminó indicando que ningún nodo generó código válido y no se creó la PR.
-
-* **Causa**: El **Shadow Sandbox (Mejora 6)** detectó que los cambios de código rompían las pruebas unitarias o la sintaxis (`node file.js`). El sistema frenó la PR para no subir código roto a tu rama.
-* **Solución en 3 Pasos**:
-  1. **Re-promptear especificando qué no alterar**: *"Añade la función divide(a,b) a test_math.js conservando las aserciones del final del archivo"*.
-  2. **Re-intentar directamente**: Al volver a lanzar la petición, la memoria federada de Hiven inyectará automáticamente reglas de corrección sobre el fallo anterior.
-  3. **Subdividir en 2 micro-tareas**: Si el cambio era masivo, pídelo en 2 instrucciones más pequeñas.
-
----
+### 🔴 Caso 1: `All 10 nodes failed validation`
+* **Causa**: El **Shadow Sandbox** detectó que el código generado rompía la compilación o las pruebas en tiempo de ejecución.
+* **Solución**: Re-promptea indicando qué funciones preexistentes no modificar o subdivide la tarea.
 
 ### 🔴 Caso 2: `Rejection: Code deletion safety guard triggered`
-> **Síntoma**: Los logs de validación muestran un aviso de que el archivo encogió más del 50%.
+* **Causa**: Un nodo intentó borrar más del 50% de un archivo heredado.
+* **Solución**: El archivo original se restaura automáticamente desde `git HEAD`. Re-intenta especificando las funciones a conservar.
 
-> [!IMPORTANT]
-> Este es un **mecanismo de defensa activo**. Ocurre cuando un modelo de IA intenta reescribir un archivo grande y elimina funciones preexistentes por falta de contexto.
-
-* **Causa**: El Coder omitió funciones preexistentes del archivo.
-* **Solución**: El **Code Deletion Guard (Mejora 4)** restaura automáticamente el archivo original desde `git HEAD`. Para ayudar al modelo en el siguiente intento, menciona los nombres de las funciones que debe conservar o enfoca el prompt en un archivo nuevo.
-
----
-
-### 🔴 Caso 3: `Dynamic Onboarding Notice / Worker Repository Not Found`
-> **Síntoma**: El bot responde en la Issue indicando que está aprovisionando tu repositorio worker `.hiven-komb-worker`.
-
-* **Causa**: Es la primera vez que utilizas Hiven con tu usuario de GitHub.
-* **Solución**: 
-  - Si estás en una **Organización de GitHub**, Hiven creará `.hiven-komb-worker` automáticamente.
-  - Si estás en una **Cuenta Personal**, crea manualmente un repositorio privado llamado **`.hiven-komb-worker`** e instala la App de Hiven en él. Responde de nuevo al comentario y el Swarm se ejecutará.
-
----
-
-### 🔴 Caso 4: El bot no responde al comentar `@hiven` en una Issue
-> **Síntoma**: Escribes un comentario en GitHub pero el bot no publica la respuesta inicial.
-
-> [!TIP]
-> Verifica que la **GitHub App de Hiven** esté instalada en el repositorio y que en la configuración de la App (Developer Settings -> GitHub Apps -> Hiven) la URL del Webhook sea `https://hiven-komb-queen.vercel.app/webhooks/github` con el evento `Issue comment` activado.
-
----
-
-### 🔴 Caso 5: Tiempo de Ejecución Prolongado (7 a 10 minutos)
-> **Síntoma**: La Fase 2 de Ejecución tarda varios minutos en avanzar.
-
-* **Causa**: Hiven ejecuta modelos Ollama (Qwen / DeepSeek) en CPUs efímeras gratuitas de GitHub Actions.
-* **Solución**: No requiere acción. Hiven trabaja de forma **asíncrona**. Puedes cerrar la pestaña o continuar trabajando; recibirás la notificación en la PR cuando finalice.
-
----
-
-## 🏗️ Topología de Arquitectura (Kōmb Sequence)
-
-```mermaid
-sequenceDiagram
-    autonumber
-    actor User as Developer / Web Console
-    participant Queen as Vercel Queen (Orchestrator)
-    participant Worker as GitHub Actions Drone (Swarm Worker)
-    participant GH as Target GitHub Repository
-
-    User->>Queen: Triggers task / Comments @hiven on Issue
-    Queen->>Queen: Phase 0: Harvest Repo & Deterministic Facts
-    Queen->>Worker: Dispatches Swarm Event (repository_dispatch)
-    Worker->>Worker: Phase 1: Architect Plan & RAG Context Selection
-    Worker->>Worker: Phase 2: Parallel Coder Drones (Nodes 1-10)
-    Worker->>Worker: Phase 3: Validation, Deletion Guard & Shadow Sandbox
-    Worker->>GH: Phase 4: Consolidation & Opens Pull Request
-    Worker-->>User: Updates Real-time Telemetry & GitHub Comment
-```
+### 🔴 Caso 3: `Worker Repository Not Found`
+* **Causa**: Primera vez usando Hiven en tu cuenta.
+* **Solución**: Crea un repositorio privado llamado **`.hiven-komb-worker`** e instala la App de Hiven en él.
 
 ---
 
