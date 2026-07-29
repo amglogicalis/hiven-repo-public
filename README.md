@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="logo_app.png" alt="Hiven Logo" width="140px" style="border-radius: 28px; box-shadow: 0 8px 24px rgba(0,0,0,0.4); margin-bottom: 20px;" />
+  <img src="hiven_logo_v2.png" alt="Hiven Logo" width="140px" style="border-radius: 28px; box-shadow: 0 8px 24px rgba(0,0,0,0.4); margin-bottom: 20px;" />
 </p>
 
 <h1 align="center">🐝 Hiven Agent</h1>
