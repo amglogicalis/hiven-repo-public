@@ -137,8 +137,8 @@ Hiven ejecuta los enjambres de forma gratuita utilizando runners efímeros de Gi
 
 - **En Organizaciones de GitHub**: Hiven creará y aprovisionará automáticamente el repositorio privado `.hiven-komb-worker` en tu organización en el primer uso.
 - **En Cuentas Personales**: 
-  1. Crea un repositorio privado en tu cuenta de GitHub llamado exactamente **`.hiven-komb-worker`**.
-  2. Asegúrate de otorgar acceso a la GitHub App de Hiven sobre este nuevo repositorio privado.
+  1. Crea un repositorio privado/público (público es recomendado debido a que no hay limites de minutos corriendo en actions al mes, en repos privados si, 2000 min/mes) en tu cuenta de GitHub llamado exactamente **`.hiven-komb-worker`**.
+  2. Asegúrate de otorgar acceso a la GitHub App de Hiven sobre este nuevo repositorio privado/público.
   3. ¡Listo! Hiven inicializará las plantillas de runners y empezará a procesar tus tareas.
 
 ---
