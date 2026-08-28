@@ -9,9 +9,9 @@
 </p>
 
 <p align="center">
-  <a href="https://amglogicalis.github.io/hiven-repo-public/"><img src="https://img.shields.io/badge/Console-Online%20Web%20Studio-f59e0b?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Live Console" /></a>
-  <a href="https://www.npmjs.com/package/terra-hiven"><img src="https://img.shields.io/badge/npm-terra--hiven-fbbf24?style=for-the-badge&logo=npm&logoColor=black" alt="npm package" /></a>
-  <img src="https://img.shields.io/badge/Version-3.0.0-f59e0b?style=for-the-badge" alt="Version 3.0.0" />
+  <a href="https://amglogicalis.github.io/hiven-repo-public/"><img src="https://img.shields.io/badge/Console-Online%20Web%20Studio-d7ed04?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Live Console" /></a>
+  <a href="https://www.npmjs.com/package/terra-hiven"><img src="https://img.shields.io/badge/npm-terra--hiven-d7ed04?style=for-the-badge&logo=npm&logoColor=black" alt="npm package" /></a>
+  <img src="https://img.shields.io/badge/Version-3.0.0-d7ed04?style=for-the-badge" alt="Version 3.0.0" />
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License MIT" />
   <img src="https://img.shields.io/badge/Architecture-100%25%20Serverless%20$0-blueviolet?style=for-the-badge" alt="Cost $0" />
 </p>
