@@ -1,12 +1,13 @@
 ﻿/**
- * Hiven Studio SPA - Core JavaScript Engine
+ * Hiven Studio SPA - Core JavaScript Engine V3.1
  * Autonomous Multi-Agent Swarm & Honeycombs Controller
  */
 
-// Initial Default State
-let currentPat = localStorage.getItem("hiven_github_pat") || "";
+// State
+let currentPat = localStorage.getItem("hiven_github_pat") || sessionStorage.getItem("hiven_github_pat") || "";
 let activeSwarms = JSON.parse(localStorage.getItem("hiven_swarms_history") || "[]");
 let honeycombsMemory = JSON.parse(localStorage.getItem("hiven_honeycombs_local") || "{}");
+let currentUser = null;
 
 // Sample Seed Patterns if empty
 if (Object.keys(honeycombsMemory).length === 0) {
@@ -25,13 +26,104 @@ if (Object.keys(honeycombsMemory).length === 0) {
   localStorage.setItem("hiven_honeycombs_local", JSON.stringify(honeycombsMemory));
 }
 
-// Initialization
-document.addEventListener("DOMContentLoaded", () => {
-  updatePatUI();
+// Initialization on DOM ready
+document.addEventListener("DOMContentLoaded", async () => {
+  if (currentPat) {
+    const valid = await validateAndLoadUser(currentPat);
+    if (valid) {
+      unlockConsole();
+    } else {
+      lockConsole();
+    }
+  } else {
+    lockConsole();
+  }
+
   renderHoneycombsGrid();
   renderSwarmsTable();
   updateStats();
 });
+
+// Authentication Gate Logic
+async function validateAndLoadUser(pat) {
+  try {
+    const res = await fetch("https://api.github.com/user", {
+      headers: {
+        "Authorization": `token ${pat}`,
+        "Accept": "application/vnd.github.v3+json"
+      }
+    });
+
+    if (res.ok) {
+      currentUser = await res.json();
+      updateUserUI(currentUser);
+      return true;
+    }
+    return false;
+  } catch (err) {
+    console.warn("Auth check failed:", err);
+    return false;
+  }
+}
+
+function unlockConsole() {
+  document.getElementById("auth-gate").style.display = "none";
+  document.getElementById("app-layout").style.display = "flex";
+  document.documentElement.classList.add("is-authenticated-pre");
+}
+
+function lockConsole() {
+  document.getElementById("auth-gate").style.display = "flex";
+  document.getElementById("app-layout").style.display = "none";
+  document.documentElement.classList.remove("is-authenticated-pre");
+}
+
+function updateUserUI(user) {
+  if (!user) return;
+  const avatar = document.getElementById("userAvatar");
+  const loginText = document.getElementById("userLoginName");
+  if (avatar && user.avatar_url) avatar.src = user.avatar_url;
+  if (loginText && user.login) loginText.innerText = `@${user.login}`;
+}
+
+async function handleAuthGateSubmit(e) {
+  e.preventDefault();
+  const input = document.getElementById("gatePatInput");
+  const btn = document.getElementById("btnGateSubmit");
+  const pat = input.value.trim();
+
+  if (!pat) {
+    showToast("Por favor introduce un GitHub PAT válido.");
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = `<span>⏳ Verificando credenciales...</span>`;
+
+  const isValid = await validateAndLoadUser(pat);
+
+  btn.disabled = false;
+  btn.innerHTML = `<span>🐝 Conectar y Acceder a Hiven</span>`;
+
+  if (isValid) {
+    currentPat = pat;
+    localStorage.setItem("hiven_github_pat", pat);
+    unlockConsole();
+    showToast(`¡Bienvenido @${currentUser.login}!`);
+  } else {
+    showToast("GitHub PAT inválido o sin permisos suficientes.");
+  }
+}
+
+function handleLogout() {
+  currentPat = "";
+  currentUser = null;
+  localStorage.removeItem("hiven_github_pat");
+  sessionStorage.removeItem("hiven_github_pat");
+  document.getElementById("gatePatInput").value = "";
+  lockConsole();
+  showToast("Sesión cerrada correctamente.");
+}
 
 // Tab Switching
 function switchTab(tabId) {
@@ -43,54 +135,6 @@ function switchTab(tabId) {
 
   const btn = Array.from(document.querySelectorAll(".nav-item")).find(b => b.getAttribute("onclick")?.includes(tabId));
   if (btn) btn.classList.add("active");
-}
-
-// Modal Management
-function openModal(modalId) {
-  const modal = document.getElementById(modalId);
-  if (modal) {
-    modal.classList.add("active");
-    if (modalId === "patModal") {
-      document.getElementById("modalPatInput").value = currentPat;
-    }
-  }
-}
-
-function closeModal(modalId) {
-  const modal = document.getElementById(modalId);
-  if (modal) modal.classList.remove("active");
-}
-
-// PAT Management
-function updatePatUI() {
-  const btn = document.getElementById("patButtonText");
-  const icon = document.getElementById("patBadgeIcon");
-  if (currentPat) {
-    btn.innerText = "PAT Conectado (✓)";
-    icon.innerText = "🔒";
-  } else {
-    btn.innerText = "Configurar GitHub PAT";
-    icon.innerText = "🔑";
-  }
-}
-
-function saveModalPat() {
-  const val = document.getElementById("modalPatInput").value.trim();
-  currentPat = val;
-  localStorage.setItem("hiven_github_pat", val);
-  updatePatUI();
-  closeModal("patModal");
-  showToast(val ? "GitHub PAT guardado con éxito" : "GitHub PAT eliminado");
-}
-
-function saveSettings() {
-  const pat = document.getElementById("settingsPat").value.trim();
-  if (pat) {
-    currentPat = pat;
-    localStorage.setItem("hiven_github_pat", pat);
-    updatePatUI();
-  }
-  showToast("Configuración guardada");
 }
 
 // Toast Notification

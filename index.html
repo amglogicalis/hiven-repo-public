@@ -3,462 +3,437 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hiven Studio — Mente Enjambre & Agente Cognitivo Autónomo</title>
+  <title>HIVEN STUDIO — Mente Enjambre & Agente Cognitivo Autónomo</title>
   <link rel="icon" type="image/png" href="assets/hiven_logo_v2.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=3.0.0">
+  <link rel="stylesheet" href="style.css?v=3.1.0">
+  <script>
+    if (localStorage.getItem('hiven_github_pat') || sessionStorage.getItem('hiven_github_pat')) {
+      document.documentElement.classList.add('is-authenticated-pre');
+    }
+  </script>
 </head>
 <body>
-  <!-- Header / Navigation Bar -->
-  <header class="topbar">
-    <div class="brand">
-      <img src="assets/hiven_logo_v2.png" alt="Hiven Logo" class="brand-logo">
-      <div class="brand-info">
-        <div class="brand-title">HIVEN <span class="version-badge">v3.0.0</span></div>
-        <div class="brand-subtitle">Autonomous Swarm Intelligence & Honeycombs Memory</div>
+
+  <!-- RESTRICTIVE AUTH GATE / LOCKSCREEN -->
+  <div id="auth-gate" class="auth-gate-screen">
+    <div class="auth-gate-card">
+      <div class="gate-header">
+        <img src="assets/hiven_logo_v2.png" alt="Hiven Logo" class="gate-logo">
+        <h2>HIVEN STUDIO</h2>
+        <div class="gate-tag">Autonomous Swarm Intelligence Engine</div>
+        <p class="gate-desc">Introduce tu GitHub Personal Access Token (PAT) para acceder a la consola. Se almacena localmente y permite despachar Kōmbees a coste $0.</p>
       </div>
+
+      <form id="form-auth-gate" onsubmit="handleAuthGateSubmit(event)">
+        <div class="form-group" style="width: 100%; text-align: left;">
+          <label for="gatePatInput">GitHub Personal Access Token (PAT)</label>
+          <input type="password" id="gatePatInput" class="form-control" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" required>
+          <small class="form-text">Requiere permisos de <code>repo</code> y <code>workflow</code>.</small>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3" style="width: 100%; justify-content: center;" id="btnGateSubmit">
+          <span>🐝 Conectar y Acceder a Hiven</span>
+        </button>
+      </form>
     </div>
-    
-    <div class="topbar-actions">
-      <div class="swarm-indicator" id="swarmIndicator">
-        <span class="pulse-dot"></span>
-        <span class="status-text">Swarm Engine Listo</span>
-      </div>
-      <button class="btn btn-secondary btn-sm" id="btnPatSettings" onclick="openModal('patModal')">
-        <span id="patBadgeIcon">🔑</span> <span id="patButtonText">Configurar GitHub PAT</span>
-      </button>
-      <a href="https://github.com/amglogicalis/hiven-repo-public" target="_blank" class="btn btn-icon" title="Ver Repositorio en GitHub">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-      </a>
-    </div>
-  </header>
-
-  <!-- Main Container -->
-  <div class="layout">
-    <!-- Sidebar Navigation -->
-    <aside class="sidebar">
-      <nav class="nav-menu">
-        <button class="nav-item active" onclick="switchTab('tab-dashboard')">
-          <span class="nav-icon">🐝</span> Dashboard & Enjambre
-        </button>
-        <button class="nav-item" onclick="switchTab('tab-dispatcher')">
-          <span class="nav-icon">🚀</span> Despachar Misión
-        </button>
-        <button class="nav-item" onclick="switchTab('tab-history')">
-          <span class="nav-icon">📋</span> Inventario de Misiones
-        </button>
-        <button class="nav-item" onclick="switchTab('tab-honeycombs')">
-          <span class="nav-icon">🍯</span> Hiven Honeycombs
-        </button>
-        <button class="nav-item" onclick="switchTab('tab-issuebot')">
-          <span class="nav-icon">🤖</span> Issue Bot Gateway
-        </button>
-        <button class="nav-item" onclick="switchTab('tab-settings')">
-          <span class="nav-icon">⚙️</span> Configuración
-        </button>
-        <button class="nav-item" onclick="switchTab('tab-docs')">
-          <span class="nav-icon">📖</span> Guía & Documentación
-        </button>
-      </nav>
-
-      <div class="sidebar-footer">
-        <div class="terra-badge">
-          <span>🌱 Terra Ecosystem</span>
-          <small>Zero-Cost Swarm</small>
-        </div>
-      </div>
-    </aside>
-
-    <!-- Content Workspace -->
-    <main class="content">
-
-      <!-- TAB 1: DASHBOARD -->
-      <section id="tab-dashboard" class="tab-pane active">
-        <div class="section-header">
-          <div>
-            <h2>Dashboard & Visualizador de Fases del Enjambre</h2>
-            <p class="text-muted">Monitoreo en tiempo real del pipeline de 4 fases y ciclo de auto-sanación (Self-Healing).</p>
-          </div>
-          <button class="btn btn-primary btn-sm" onclick="switchTab('tab-dispatcher')">
-            <span>+ Nueva Misión</span>
-          </button>
-        </div>
-
-        <!-- Quick Stats -->
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-icon">🐝</div>
-            <div class="stat-value" id="statActiveWorkers">0</div>
-            <div class="stat-label">Kōmbees Activos</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon">🍯</div>
-            <div class="stat-value" id="statPatternsCount">14</div>
-            <div class="stat-label">Celdas Honeycombs</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon">🩹</div>
-            <div class="stat-value" id="statSelfHealingRate">99.2%</div>
-            <div class="stat-label">Tasa de Éxito con Self-Healing</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon">🚀</div>
-            <div class="stat-value" id="statTotalPRs">0</div>
-            <div class="stat-label">Pull Requests Generadas</div>
-          </div>
-        </div>
-
-        <!-- Live Swarm Pipeline Stepper -->
-        <div class="card mt-4">
-          <div class="card-header">
-            <h3>Pipeline Multi-Fase del Enjambre</h3>
-            <span class="badge badge-amber" id="currentPhaseBadge">Fase: Standby</span>
-          </div>
-          
-          <div class="pipeline-stepper">
-            <div class="step-node active" id="step0">
-              <div class="step-circle">0</div>
-              <div class="step-title">Deterministic Extractor</div>
-              <div class="step-desc">AST & Dependencies</div>
-            </div>
-            <div class="step-connector"></div>
-            <div class="step-node" id="step1">
-              <div class="step-circle">1</div>
-              <div class="step-title">Swarm Architect</div>
-              <div class="step-desc">Task Graph (DAG)</div>
-            </div>
-            <div class="step-connector"></div>
-            <div class="step-node" id="step2">
-              <div class="step-circle">2</div>
-              <div class="step-title">Parallel Coders</div>
-              <div class="step-desc">Surgical Diffs</div>
-            </div>
-            <div class="step-connector"></div>
-            <div class="step-node" id="step3">
-              <div class="step-circle">3</div>
-              <div class="step-title">Shadow Sandbox</div>
-              <div class="step-desc">Test & Verify</div>
-            </div>
-            <div class="step-connector"></div>
-            <div class="step-node" id="stepHeal">
-              <div class="step-circle">🩹</div>
-              <div class="step-title">Self-Healing Loop</div>
-              <div class="step-desc">Auto-Fix Error Traces</div>
-            </div>
-            <div class="step-connector"></div>
-            <div class="step-node" id="step4">
-              <div class="step-circle">4</div>
-              <div class="step-title">Pull Request</div>
-              <div class="step-desc">Publish & Patch</div>
-            </div>
-          </div>
-
-          <!-- Activity Terminal -->
-          <div class="terminal-box mt-3" id="dashboardTerminal">
-            <div class="terminal-line"><span class="term-time">[HIVEN-SYS]</span> Mente enjambre lista. Esperando instrucciones de misión...</div>
-            <div class="terminal-line"><span class="term-time">[HONEYCOMBS]</span> Celdas de memoria cargadas desde .hiven-storage.</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- TAB 2: DISPATCHER -->
-      <section id="tab-dispatcher" class="tab-pane">
-        <div class="section-header">
-          <div>
-            <h2>Despachador de Misiones Autónomas</h2>
-            <p class="text-muted">Configura y lanza un enjambre multi-agente con personalización total.</p>
-          </div>
-        </div>
-
-        <div class="card">
-          <form id="dispatchForm" onsubmit="handleDispatchSwarm(event)">
-            <div class="form-grid">
-              <div class="form-group full-width">
-                <label for="inputRepo">Repositorio Objetivo <span class="required">*</span></label>
-                <input type="text" id="inputRepo" class="form-control" placeholder="usuario/mi-repositorio" required>
-                <small class="form-text">Debe tener permisos de escritura con tu GitHub PAT.</small>
-              </div>
-
-              <div class="form-group full-width">
-                <label for="inputPrompt">Instrucción / Misión en Lenguaje Natural <span class="required">*</span></label>
-                <textarea id="inputPrompt" class="form-control" rows="4" placeholder="Ej: Implementar autenticación JWT con endpoints de login/register, agregar tests unitarios y documentar en el README..." required></textarea>
-              </div>
-
-              <div class="form-group">
-                <label for="inputBranch">Rama de Trabajo <span class="text-muted">(opcional)</span></label>
-                <input type="text" id="inputBranch" class="form-control" placeholder="hiven/feature-auth">
-                <small class="form-text">Si se omite, se creará una rama automática con timestamp.</small>
-              </div>
-
-              <div class="form-group">
-                <label for="inputBaseBranch">Rama Base <span class="text-muted">(opcional)</span></label>
-                <input type="text" id="inputBaseBranch" class="form-control" placeholder="main" value="main">
-              </div>
-
-              <div class="form-group">
-                <label for="inputWorkers">Kōmbees Concurrentes <span class="text-muted">(opcional)</span></label>
-                <div class="range-with-val">
-                  <input type="range" id="inputWorkers" min="1" max="10" value="4" oninput="document.getElementById('workersVal').innerText = this.value">
-                  <span id="workersVal" class="range-val">4</span>
-                </div>
-                <small class="form-text">Sub-swarms paralelos para particionar archivos.</small>
-              </div>
-
-              <div class="form-group">
-                <label for="inputTestCmd">Comando de Verificación / Tests <span class="text-muted">(opcional)</span></label>
-                <input type="text" id="inputTestCmd" class="form-control" placeholder="npm test || pytest">
-                <small class="form-text">Comando ejecutado en el Shadow Sandbox para validar cambios.</small>
-              </div>
-
-              <div class="form-group">
-                <label for="inputRetries">Reintentos de Auto-Sanación (Self-Healing) <span class="text-muted">(opcional)</span></label>
-                <select id="inputRetries" class="form-control">
-                  <option value="1">1 Reintento</option>
-                  <option value="3" selected>3 Reintentos (Recomendado)</option>
-                  <option value="5">5 Reintentos (Máxima Robustez)</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label for="inputDryRun">Modo de Ejecución <span class="text-muted">(opcional)</span></label>
-                <select id="inputDryRun" class="form-control">
-                  <option value="false" selected>⚡ Despacho Real (GitHub Actions PR)</option>
-                  <option value="true">🧪 Simulación Local (Dry-Run)</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="form-actions mt-4">
-              <button type="submit" class="btn btn-primary" id="btnDispatch">
-                <span>🐝 Lanzar Enjambre Autónomo</span>
-              </button>
-              <button type="button" class="btn btn-secondary" onclick="generateWorkflowOnly()">
-                <span>📄 Generar Workflow YAML</span>
-              </button>
-            </div>
-          </form>
-        </div>
-      </section>
-
-      <!-- TAB 3: INVENTORY -->
-      <section id="tab-history" class="tab-pane">
-        <div class="section-header">
-          <div>
-            <h2>Inventario de Misiones & Pull Requests</h2>
-            <p class="text-muted">Registro histórico de tareas resueltas y Pull Requests gestionadas por Hiven.</p>
-          </div>
-          <button class="btn btn-secondary btn-sm" onclick="loadSwarmsHistory()">
-            <span>🔄 Refrescar</span>
-          </button>
-        </div>
-
-        <div class="card">
-          <div class="table-responsive">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Swarm ID</th>
-                  <th>Repositorio</th>
-                  <th>Estado</th>
-                  <th>Misión</th>
-                  <th>Auto-Sanación</th>
-                  <th>Fecha</th>
-                  <th>Pull Request</th>
-                </tr>
-              </thead>
-              <tbody id="swarmsTableBody">
-                <tr>
-                  <td colspan="7" class="text-center text-muted">No hay misiones recientes. Despacha una en la pestaña "Despachar Misión".</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- TAB 4: HONEYCOMBS MEMORY -->
-      <section id="tab-honeycombs" class="tab-pane">
-        <div class="section-header">
-          <div>
-            <h2>Hiven Honeycombs (Memoria Global Colectiva)</h2>
-            <p class="text-muted">Patrones federados de aprendizaje y directivas aprendidas automáticamente por Hiven.</p>
-          </div>
-          <div class="actions-group">
-            <button class="btn btn-secondary btn-sm" onclick="openAddPatternModal()">
-              <span>+ Añadir Patrón</span>
-            </button>
-            <button class="btn btn-secondary btn-sm" onclick="exportHoneycombs()">
-              <span>💾 Exportar JSON</span>
-            </button>
-            <button class="btn btn-danger btn-sm" onclick="clearHoneycombs()">
-              <span>🗑️ Purgar Memoria</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Honeycombs Cells Grid -->
-        <div class="honeycomb-grid" id="honeycombsGrid">
-          <!-- Populated dynamically -->
-        </div>
-      </section>
-
-      <!-- TAB 5: ISSUE BOT GATEWAY -->
-      <section id="tab-issuebot" class="tab-pane">
-        <div class="section-header">
-          <div>
-            <h2>Issue Bot Gateway (Vercel Bridge)</h2>
-            <p class="text-muted">Configura y verifica la escucha de menciones <code>@hiven</code> en Issues de GitHub.</p>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="bridge-status-box">
-            <div class="bridge-badge">🤖 GitHub App Gateway</div>
-            <h3>Listener de Webhooks para Issues</h3>
-            <p>Permite que cualquier desarrollador invoque a Hiven en un Issue o Pull Request simplemente escribiendo un comentario con <code>@hiven</code> o <code>/hiven</code>.</p>
-            
-            <div class="webhook-endpoint-box mt-3">
-              <label>Endpoint Webhook en Producción:</label>
-              <div class="copy-field">
-                <code>https://hiven-komb-queen.vercel.app/webhooks/github</code>
-                <button class="btn btn-sm btn-secondary" onclick="navigator.clipboard.writeText('https://hiven-komb-queen.vercel.app/webhooks/github'); showToast('Endpoint copiado');">Copiar</button>
-              </div>
-            </div>
-
-            <div class="mt-4">
-              <h4>Estado de Activación:</h4>
-              <div class="status-indicator-box">
-                <span class="status-pill active">✓ Gateway Operativo</span>
-                <span class="status-pill active">✓ Honeycombs K/V Nativo Activo</span>
-                <span class="status-pill active">✓ Zero-Cost Mode Habilitado</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- TAB 6: SETTINGS -->
-      <section id="tab-settings" class="tab-pane">
-        <div class="section-header">
-          <div>
-            <h2>Configuración & Proveedores</h2>
-            <p class="text-muted">Gestiona tus credenciales de GitHub y endpoints locales.</p>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="form-group">
-            <label for="settingsPat">GitHub Personal Access Token (PAT)</label>
-            <input type="password" id="settingsPat" class="form-control" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
-            <small class="form-text">Requiere permisos de <code>repo</code> y <code>workflow</code> para despachar swarms.</small>
-          </div>
-
-          <div class="form-group mt-3">
-            <label for="settingsStorageRepo">Repositorio de Almacenamiento Vault</label>
-            <input type="text" id="settingsStorageRepo" class="form-control" value=".hiven-storage">
-            <small class="form-text">Repositorio privado donde Honeycombs guarda los patrones y el estado de swarms.</small>
-          </div>
-
-          <div class="form-group mt-3">
-            <label for="settingsOllama">Host Local de Ollama (CLI / Offline)</label>
-            <input type="text" id="settingsOllama" class="form-control" value="http://localhost:11434">
-            <small class="form-text">Utilizado por el CLI para inferencia 100% privada local.</small>
-          </div>
-
-          <button class="btn btn-primary mt-4" onclick="saveSettings()">
-            <span>💾 Guardar Configuración</span>
-          </button>
-        </div>
-      </section>
-
-      <!-- TAB 7: DOCS & FAQ -->
-      <section id="tab-docs" class="tab-pane">
-        <div class="section-header">
-          <div>
-            <h2>Guía de Arquitectura & Documentación Técnica</h2>
-            <p class="text-muted">Manual completo, funcionamiento de las 4 fases, Honeycombs y preguntas frecuentes.</p>
-          </div>
-        </div>
-
-        <div class="docs-container">
-          <div class="docs-sidebar">
-            <a href="#doc-overview" class="docs-link active">1. Visión General</a>
-            <a href="#doc-phases" class="docs-link">2. Pipeline de 4 Fases</a>
-            <a href="#doc-selfhealing" class="docs-link">3. Bucle de Auto-Sanación</a>
-            <a href="#doc-diffs" class="docs-link">4. Diffs Quirúrgicos</a>
-            <a href="#doc-honeycombs" class="docs-link">5. Hiven Honeycombs</a>
-            <a href="#doc-cli" class="docs-link">6. Referencia CLI & SDK</a>
-            <a href="#doc-faq" class="docs-link">7. Preguntas Frecuentes</a>
-          </div>
-
-          <div class="docs-content">
-            <article id="doc-overview">
-              <h3>1. Visión General</h3>
-              <p><strong>Hiven</strong> es el agente de ingeniería de software autónomo multi-agente de coste \$0 del ecosistema Terra. Funciona transformando los runners efímeros de GitHub Actions en un laboratorio de desarrollo neuronal coordinado.</p>
-            </article>
-
-            <article id="doc-phases" class="mt-4">
-              <h3>2. Pipeline de 4 Fases</h3>
-              <p>El enjambre ejecuta un proceso estricto y determinista:</p>
-              <ul>
-                <li><strong>Fase 0 (Deterministic Extractor):</strong> Inspecciona dependencias y AST sin alucinaciones.</li>
-                <li><strong>Fase 1 (Architect):</strong> Descompone la misión en un grafo acíclico de tareas (Task DAG).</li>
-                <li><strong>Fase 2 (Parallel Coders):</strong> Nodos Kōmbee concurrentes escriben código usando bloques de búsqueda y reemplazo.</li>
-                <li><strong>Fase 3 (Shadow Sandbox):</strong> Ejecuta tests unitarios en un contenedor aislado previo a cualquier commit.</li>
-                <li><strong>Fase 4 (Consolidator):</strong> Consolida los parches ganadores y crea la Pull Request oficial.</li>
-              </ul>
-            </article>
-
-            <article id="doc-selfhealing" class="mt-4">
-              <h3>3. Bucle de Auto-Sanación (Self-Healing Loop)</h3>
-              <p>Si la Fase 3 detecta que los tests fallan, Hiven extrae el stack trace de error y lo reinyecta automáticamente en un sub-enjambre de corrección (hasta 3-5 intentos) hasta que la suite de pruebas concluya con éxito.</p>
-            </article>
-
-            <article id="doc-faq" class="mt-4">
-              <h3>7. Preguntas Frecuentes (FAQ)</h3>
-              <details class="faq-item">
-                <summary><strong>¿Hiven tiene algún coste de infraestructura mensual?</strong></summary>
-                <p>No. Opera 100% sobre minutos gratuitos de GitHub Actions, almacenamiento en repositorios Git y GitHub Pages.</p>
-              </details>
-              <details class="faq-item">
-                <summary><strong>¿Dónde se almacena la memoria Honeycombs?</strong></summary>
-                <p>Se almacena en tu propio repositorio privado <code>.hiven-storage</code> y en la memoria local de sesión.</p>
-              </details>
-            </article>
-          </div>
-        </div>
-      </section>
-
-    </main>
   </div>
 
-  <!-- PAT Modal -->
-  <div class="modal" id="patModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>🔑 Configuración de GitHub Personal Access Token (PAT)</h3>
-        <button class="modal-close" onclick="closeModal('patModal')">&times;</button>
-      </div>
-      <div class="modal-body">
-        <p class="text-muted">Introduce tu token para conectar la Consola Web con tus repositorios de GitHub. Se almacena exclusivamente en tu navegador.</p>
-        <div class="form-group mt-3">
-          <label for="modalPatInput">Personal Access Token</label>
-          <input type="password" id="modalPatInput" class="form-control" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
-          <small class="form-text">Permisos requeridos: <code>repo</code> y <code>workflow</code>.</small>
+  <!-- MAIN APPLICATION LAYOUT -->
+  <div id="app-layout" class="app-layout-wrapper">
+    <!-- Header / Navigation Bar -->
+    <header class="topbar">
+      <div class="brand">
+        <img src="assets/hiven_logo_v2.png" alt="Hiven Logo" class="brand-logo">
+        <div class="brand-info">
+          <div class="brand-title">HIVEN <span class="version-badge">v3.0.0</span></div>
+          <div class="brand-subtitle">Autonomous Swarm Intelligence & Honeycombs Memory</div>
         </div>
       </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" onclick="closeModal('patModal')">Cancelar</button>
-        <button class="btn btn-primary" onclick="saveModalPat()">Guardar Token</button>
+      
+      <div class="topbar-actions">
+        <div class="swarm-indicator" id="swarmIndicator">
+          <span class="pulse-dot"></span>
+          <span class="status-text">Swarm Engine Listo</span>
+        </div>
+
+        <div class="user-profile-badge" id="userProfileBadge">
+          <img id="userAvatar" src="assets/hiven_logo_v2.png" alt="User Avatar" class="user-avatar-mini">
+          <span id="userLoginName" class="user-login-text">Conectado</span>
+          <button class="btn-logout" onclick="handleLogout()" title="Cerrar Sesión">Desconectar</button>
+        </div>
+
+        <a href="https://github.com/amglogicalis/hiven-repo-public" target="_blank" class="btn btn-icon" title="Ver Repositorio en GitHub">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        </a>
       </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="layout">
+      <!-- Sidebar Navigation -->
+      <aside class="sidebar">
+        <nav class="nav-menu">
+          <button class="nav-item active" onclick="switchTab('tab-dashboard')">
+            <span class="nav-icon">🐝</span> Dashboard & Enjambre
+          </button>
+          <button class="nav-item" onclick="switchTab('tab-dispatcher')">
+            <span class="nav-icon">🚀</span> Despachar Misión
+          </button>
+          <button class="nav-item" onclick="switchTab('tab-history')">
+            <span class="nav-icon">📋</span> Inventario de Misiones
+          </button>
+          <button class="nav-item" onclick="switchTab('tab-honeycombs')">
+            <span class="nav-icon">🍯</span> Hiven Honeycombs
+          </button>
+          <button class="nav-item" onclick="switchTab('tab-issuebot')">
+            <span class="nav-icon">🤖</span> Issue Bot Gateway
+          </button>
+          <button class="nav-item" onclick="switchTab('tab-docs')">
+            <span class="nav-icon">📖</span> Guía & Documentación
+          </button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="terra-badge">
+            <span>🌱 Terra Ecosystem</span>
+            <small>Zero-Cost Swarm</small>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Content Workspace -->
+      <main class="content">
+
+        <!-- TAB 1: DASHBOARD -->
+        <section id="tab-dashboard" class="tab-pane active">
+          <div class="section-header">
+            <div>
+              <h2>Dashboard & Visualizador de Fases del Enjambre</h2>
+              <p class="text-muted">Monitoreo en tiempo real del pipeline de 4 fases y ciclo de auto-sanación (Self-Healing).</p>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="switchTab('tab-dispatcher')">
+              <span>+ Nueva Misión</span>
+            </button>
+          </div>
+
+          <!-- Quick Stats -->
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon">🐝</div>
+              <div class="stat-value" id="statActiveWorkers">0</div>
+              <div class="stat-label">Kōmbees Activos</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">🍯</div>
+              <div class="stat-value" id="statPatternsCount">14</div>
+              <div class="stat-label">Celdas Honeycombs</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">🩹</div>
+              <div class="stat-value" id="statSelfHealingRate">99.2%</div>
+              <div class="stat-label">Tasa de Éxito con Self-Healing</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">🚀</div>
+              <div class="stat-value" id="statTotalPRs">0</div>
+              <div class="stat-label">Pull Requests Generadas</div>
+            </div>
+          </div>
+
+          <!-- Live Swarm Pipeline Stepper -->
+          <div class="card mt-4">
+            <div class="card-header">
+              <h3>Pipeline Multi-Fase del Enjambre</h3>
+              <span class="badge badge-amber" id="currentPhaseBadge">Fase: Standby</span>
+            </div>
+            
+            <div class="pipeline-stepper">
+              <div class="step-node active" id="step0">
+                <div class="step-circle">0</div>
+                <div class="step-title">Deterministic Extractor</div>
+                <div class="step-desc">AST & Dependencies</div>
+              </div>
+              <div class="step-connector"></div>
+              <div class="step-node" id="step1">
+                <div class="step-circle">1</div>
+                <div class="step-title">Swarm Architect</div>
+                <div class="step-desc">Task Graph (DAG)</div>
+              </div>
+              <div class="step-connector"></div>
+              <div class="step-node" id="step2">
+                <div class="step-circle">2</div>
+                <div class="step-title">Parallel Coders</div>
+                <div class="step-desc">Surgical Diffs</div>
+              </div>
+              <div class="step-connector"></div>
+              <div class="step-node" id="step3">
+                <div class="step-circle">3</div>
+                <div class="step-title">Shadow Sandbox</div>
+                <div class="step-desc">Test & Verify</div>
+              </div>
+              <div class="step-connector"></div>
+              <div class="step-node" id="stepHeal">
+                <div class="step-circle">🩹</div>
+                <div class="step-title">Self-Healing Loop</div>
+                <div class="step-desc">Auto-Fix Error Traces</div>
+              </div>
+              <div class="step-connector"></div>
+              <div class="step-node" id="step4">
+                <div class="step-circle">4</div>
+                <div class="step-title">Pull Request</div>
+                <div class="step-desc">Publish & Patch</div>
+              </div>
+            </div>
+
+            <!-- Activity Terminal -->
+            <div class="terminal-box mt-3" id="dashboardTerminal">
+              <div class="terminal-line"><span class="term-time">[HIVEN-SYS]</span> Mente enjambre lista. Esperando instrucciones de misión...</div>
+              <div class="terminal-line"><span class="term-time">[HONEYCOMBS]</span> Celdas de memoria cargadas desde .hiven-storage.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 2: DISPATCHER -->
+        <section id="tab-dispatcher" class="tab-pane">
+          <div class="section-header">
+            <div>
+              <h2>Despachador de Misiones Autónomas</h2>
+              <p class="text-muted">Configura y lanza un enjambre multi-agente con personalización total.</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <form id="dispatchForm" onsubmit="handleDispatchSwarm(event)">
+              <div class="form-grid">
+                <div class="form-group full-width">
+                  <label for="inputRepo">Repositorio Objetivo <span class="required">*</span></label>
+                  <input type="text" id="inputRepo" class="form-control" placeholder="usuario/mi-repositorio" required>
+                  <small class="form-text">Debe tener permisos de escritura con tu GitHub PAT.</small>
+                </div>
+
+                <div class="form-group full-width">
+                  <label for="inputPrompt">Instrucción / Misión en Lenguaje Natural <span class="required">*</span></label>
+                  <textarea id="inputPrompt" class="form-control" rows="4" placeholder="Ej: Implementar autenticación JWT con endpoints de login/register, agregar tests unitarios y documentar en el README..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label for="inputBranch">Rama de Trabajo <span class="text-muted">(opcional)</span></label>
+                  <input type="text" id="inputBranch" class="form-control" placeholder="hiven/feature-auth">
+                  <small class="form-text">Si se omite, se creará una rama automática con timestamp.</small>
+                </div>
+
+                <div class="form-group">
+                  <label for="inputBaseBranch">Rama Base <span class="text-muted">(opcional)</span></label>
+                  <input type="text" id="inputBaseBranch" class="form-control" placeholder="main" value="main">
+                </div>
+
+                <div class="form-group">
+                  <label for="inputWorkers">Kōmbees Concurrentes <span class="text-muted">(opcional)</span></label>
+                  <div class="range-with-val">
+                    <input type="range" id="inputWorkers" min="1" max="10" value="4" oninput="document.getElementById('workersVal').innerText = this.value">
+                    <span id="workersVal" class="range-val">4</span>
+                  </div>
+                  <small class="form-text">Sub-swarms paralelos para particionar archivos.</small>
+                </div>
+
+                <div class="form-group">
+                  <label for="inputTestCmd">Comando de Verificación / Tests <span class="text-muted">(opcional)</span></label>
+                  <input type="text" id="inputTestCmd" class="form-control" placeholder="npm test || pytest">
+                  <small class="form-text">Comando ejecutado en el Shadow Sandbox para validar cambios.</small>
+                </div>
+
+                <div class="form-group">
+                  <label for="inputRetries">Reintentos de Auto-Sanación (Self-Healing) <span class="text-muted">(opcional)</span></label>
+                  <select id="inputRetries" class="form-control">
+                    <option value="1">1 Reintento</option>
+                    <option value="3" selected>3 Reintentos (Recomendado)</option>
+                    <option value="5">5 Reintentos (Máxima Robustez)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="inputDryRun">Modo de Ejecución <span class="text-muted">(opcional)</span></label>
+                  <select id="inputDryRun" class="form-control">
+                    <option value="false" selected>⚡ Despacho Real (GitHub Actions PR)</option>
+                    <option value="true">🧪 Simulación Local (Dry-Run)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-actions mt-4">
+                <button type="submit" class="btn btn-primary" id="btnDispatch">
+                  <span>🐝 Lanzar Enjambre Autónomo</span>
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="generateWorkflowOnly()">
+                  <span>📄 Generar Workflow YAML</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- TAB 3: INVENTORY -->
+        <section id="tab-history" class="tab-pane">
+          <div class="section-header">
+            <div>
+              <h2>Inventario de Misiones & Pull Requests</h2>
+              <p class="text-muted">Registro histórico de tareas resueltas y Pull Requests gestionadas por Hiven.</p>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="loadSwarmsHistory()">
+              <span>🔄 Refrescar</span>
+            </button>
+          </div>
+
+          <div class="card">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Swarm ID</th>
+                    <th>Repositorio</th>
+                    <th>Estado</th>
+                    <th>Misión</th>
+                    <th>Auto-Sanación</th>
+                    <th>Fecha</th>
+                    <th>Pull Request</th>
+                  </tr>
+                </thead>
+                <tbody id="swarmsTableBody">
+                  <tr>
+                    <td colspan="7" class="text-center text-muted">No hay misiones recientes. Despacha una en la pestaña "Despachar Misión".</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 4: HONEYCOMBS MEMORY -->
+        <section id="tab-honeycombs" class="tab-pane">
+          <div class="section-header">
+            <div>
+              <h2>Hiven Honeycombs (Memoria Global Colectiva)</h2>
+              <p class="text-muted">Patrones federados de aprendizaje y directivas aprendidas automáticamente por Hiven.</p>
+            </div>
+            <div class="actions-group">
+              <button class="btn btn-secondary btn-sm" onclick="exportHoneycombs()">
+                <span>💾 Exportar JSON</span>
+              </button>
+              <button class="btn btn-danger btn-sm" onclick="clearHoneycombs()">
+                <span>🗑️ Purgar Memoria</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Honeycombs Cells Grid -->
+          <div class="honeycomb-grid" id="honeycombsGrid">
+            <!-- Populated dynamically -->
+          </div>
+        </section>
+
+        <!-- TAB 5: ISSUE BOT GATEWAY -->
+        <section id="tab-issuebot" class="tab-pane">
+          <div class="section-header">
+            <div>
+              <h2>Issue Bot Gateway (Vercel Bridge)</h2>
+              <p class="text-muted">Configura y verifica la escucha de menciones <code>@hiven</code> en Issues de GitHub.</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="bridge-status-box">
+              <div class="bridge-badge">🤖 GitHub App Gateway</div>
+              <h3>Listener de Webhooks para Issues</h3>
+              <p>Permite que cualquier desarrollador invoque a Hiven en un Issue o Pull Request simplemente escribiendo un comentario con <code>@hiven</code> o <code>/hiven</code>.</p>
+              
+              <div class="webhook-endpoint-box mt-3">
+                <label>Endpoint Webhook en Producción:</label>
+                <div class="copy-field">
+                  <code>https://hiven-komb-queen.vercel.app/webhooks/github</code>
+                  <button class="btn btn-sm btn-secondary" onclick="navigator.clipboard.writeText('https://hiven-komb-queen.vercel.app/webhooks/github'); showToast('Endpoint copiado');">Copiar</button>
+                </div>
+              </div>
+
+              <div class="mt-4">
+                <h4>Estado de Activación:</h4>
+                <div class="status-indicator-box">
+                  <span class="status-pill active">✓ Gateway Operativo</span>
+                  <span class="status-pill active">✓ Honeycombs K/V Nativo Activo</span>
+                  <span class="status-pill active">✓ Zero-Cost Mode Habilitado</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 6: DOCS & FAQ -->
+        <section id="tab-docs" class="tab-pane">
+          <div class="section-header">
+            <div>
+              <h2>Guía de Arquitectura & Documentación Técnica</h2>
+              <p class="text-muted">Manual completo, funcionamiento de las 4 fases, Honeycombs y preguntas frecuentes.</p>
+            </div>
+          </div>
+
+          <div class="docs-container">
+            <div class="docs-sidebar">
+              <a href="#doc-overview" class="docs-link active">1. Visión General</a>
+              <a href="#doc-phases" class="docs-link">2. Pipeline de 4 Fases</a>
+              <a href="#doc-selfhealing" class="docs-link">3. Bucle de Auto-Sanación</a>
+              <a href="#doc-diffs" class="docs-link">4. Diffs Quirúrgicos</a>
+              <a href="#doc-honeycombs" class="docs-link">5. Hiven Honeycombs</a>
+              <a href="#doc-cli" class="docs-link">6. Referencia CLI & SDK</a>
+              <a href="#doc-faq" class="docs-link">7. Preguntas Frecuentes</a>
+            </div>
+
+            <div class="docs-content">
+              <article id="doc-overview">
+                <h3>1. Visión General</h3>
+                <p><strong>Hiven</strong> es el agente de ingeniería de software autónomo multi-agente de coste \$0 del ecosistema Terra. Funciona transformando los runners efímeros de GitHub Actions en un laboratorio de desarrollo neuronal coordinado.</p>
+              </article>
+
+              <article id="doc-phases" class="mt-4">
+                <h3>2. Pipeline de 4 Fases</h3>
+                <p>El enjambre ejecuta un proceso estricto y determinista:</p>
+                <ul>
+                  <li><strong>Fase 0 (Deterministic Extractor):</strong> Inspecciona dependencias y AST sin alucinaciones.</li>
+                  <li><strong>Fase 1 (Architect):</strong> Descompone la misión en un grafo acíclico de tareas (Task DAG).</li>
+                  <li><strong>Fase 2 (Parallel Coders):</strong> Nodos Kōmbee concurrentes escriben código usando bloques de búsqueda y reemplazo.</li>
+                  <li><strong>Fase 3 (Shadow Sandbox):</strong> Ejecuta tests unitarios en un contenedor aislado previo a cualquier commit.</li>
+                  <li><strong>Fase 4 (Consolidator):</strong> Consolida los parches ganadores y crea la Pull Request oficial.</li>
+                </ul>
+              </article>
+
+              <article id="doc-selfhealing" class="mt-4">
+                <h3>3. Bucle de Auto-Sanación (Self-Healing Loop)</h3>
+                <p>Si la Fase 3 detecta que los tests fallan, Hiven extrae el stack trace de error y lo reinyecta automáticamente en un sub-enjambre de corrección (hasta 3-5 intentos) hasta que la suite de pruebas concluya con éxito.</p>
+              </article>
+
+              <article id="doc-faq" class="mt-4">
+                <h3>7. Preguntas Frecuentes (FAQ)</h3>
+                <details class="faq-item">
+                  <summary><strong>¿Hiven tiene algún coste de infraestructura mensual?</strong></summary>
+                  <p>No. Opera 100% sobre minutos gratuitos de GitHub Actions, almacenamiento en repositorios Git y GitHub Pages.</p>
+                </details>
+                <details class="faq-item">
+                  <summary><strong>¿Dónde se almacena la memoria Honeycombs?</strong></summary>
+                  <p>Se almacena en tu propio repositorio privado <code>.hiven-storage</code> y en la memoria local de sesión.</p>
+                </details>
+              </article>
+            </div>
+          </div>
+        </section>
+
+      </main>
     </div>
   </div>
 
   <!-- Toast Notification -->
   <div id="toast" class="toast"></div>
 
-  <script src="app.js?v=3.0.0"></script>
+  <script src="app.js?v=3.1.0"></script>
 </body>
 </html>
