@@ -1,0 +1,19 @@
+[
+  {
+    "key": "hive_patterns:js",
+    "value": [
+      {
+        "patternType": "security",
+        "summary": "Strict Protocol Whitelisting using URL Constructor",
+        "doDirective": "Check parsed.protocol against an immutable Set of allowed protocols (https:, wss:).",
+        "dontDirective": "Never use loose regex matching for protocols; it allows javascript: or data: bypasses.",
+        "id": "pat_60d9458f",
+        "usageCount": 1,
+        "discoveredAt": "2026-08-31T10:29:26.923Z",
+        "lastUsedAt": "2026-08-31T10:29:26.923Z"
+      }
+    ],
+    "createdAt": "2026-08-31T10:29:26.923Z",
+    "updatedAt": "2026-08-31T10:29:26.923Z"
+  }
+]
