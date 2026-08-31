@@ -1,29 +1,31 @@
 ﻿/**
- * Hiven Studio SPA - Core JavaScript Engine V3.1
- * Autonomous Multi-Agent Swarm & Honeycombs Controller
+ * Hiven Studio SPA - Core JavaScript Engine V3.2
+ * Autonomous Multi-Agent Swarm & Dual-Level Honeycombs Controller
  */
 
 // State
 let currentPat = localStorage.getItem("hiven_github_pat") || sessionStorage.getItem("hiven_github_pat") || "";
 let activeSwarms = JSON.parse(localStorage.getItem("hiven_swarms_history") || "[]");
-let honeycombsMemory = JSON.parse(localStorage.getItem("hiven_honeycombs_local") || "{}");
+let localHoneycombs = JSON.parse(localStorage.getItem("hiven_honeycombs_local") || "{}");
+let globalHivemindEnabled = localStorage.getItem("hiven_global_hivemind") === "true";
+let globalHoneycombs = {};
 let currentUser = null;
 
-// Sample Seed Patterns if empty
-if (Object.keys(honeycombsMemory).length === 0) {
-  honeycombsMemory = {
+// Initial Local Seed Patterns if empty
+if (Object.keys(localHoneycombs).length === 0) {
+  localHoneycombs = {
     ts: [
-      { id: "pat_1", patternType: "architecture", summary: "Modular Export Pattern", doDirective: "Use explicit named exports and NodeNext extensions (.js in imports).", usageCount: 12 },
-      { id: "pat_2", patternType: "testing", summary: "Isolated Sandbox Fixtures", doDirective: "Create scratch mock directories for temp file tests.", usageCount: 8 }
+      { id: "pat_local_1", patternType: "architecture", summary: "Modular Export Pattern", doDirective: "Use explicit named exports and NodeNext extensions (.js in imports).", usageCount: 12 },
+      { id: "pat_local_2", patternType: "testing", summary: "Isolated Sandbox Fixtures", doDirective: "Create scratch mock directories for temp file tests.", usageCount: 8 }
     ],
     py: [
-      { id: "pat_3", patternType: "best_practice", summary: "Type Hinting Protocol", doDirective: "Include typing annotations (Optional, Union, Dict) in function signatures.", usageCount: 15 }
+      { id: "pat_local_3", patternType: "best_practice", summary: "Type Hinting Protocol", doDirective: "Include typing annotations (Optional, Union, Dict) in function signatures.", usageCount: 15 }
     ],
     rs: [
-      { id: "pat_4", patternType: "architecture", summary: "Zero-Allocation Parsing", doDirective: "Use &str slices instead of allocating String instances in inner loops.", usageCount: 6 }
+      { id: "pat_local_4", patternType: "architecture", summary: "Zero-Allocation Parsing", doDirective: "Use &str slices instead of allocating String instances in inner loops.", usageCount: 6 }
     ]
   };
-  localStorage.setItem("hiven_honeycombs_local", JSON.stringify(honeycombsMemory));
+  localStorage.setItem("hiven_honeycombs_local", JSON.stringify(localHoneycombs));
 }
 
 // Initialization on DOM ready
@@ -38,6 +40,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   } else {
     lockConsole();
   }
+
+  // Restore Hivemind checkbox state
+  initHivemindState();
 
   renderHoneycombsGrid();
   renderSwarmsTable();
@@ -147,6 +152,218 @@ function showToast(msg) {
   }, 3000);
 }
 
+// Modal Management
+function openModal(id) {
+  const m = document.getElementById(id);
+  if (m) m.classList.add("active");
+}
+
+function closeModal(id) {
+  const m = document.getElementById(id);
+  if (m) m.classList.remove("active");
+}
+
+// ==========================================
+// HIVEMIND DUAL-LEVEL CONTROLLER
+// ==========================================
+
+function initHivemindState() {
+  const checkbox = document.getElementById("checkGlobalHivemind");
+  const badge = document.getElementById("badgeHivemindStatus");
+  const syncText = document.getElementById("textHivemindSyncStatus");
+
+  if (globalHivemindEnabled) {
+    checkbox.checked = true;
+    badge.className = "status-pill active";
+    badge.innerText = "✓ Mente Colmena Activa";
+    syncText.innerText = "Sincronizado con Red Terra";
+    fetchGlobalHivemindPatterns();
+  } else {
+    checkbox.checked = false;
+    badge.className = "status-pill text-muted";
+    badge.innerText = "Aislado / Solo Local";
+    syncText.innerText = "Desconectado";
+  }
+}
+
+function handleHivemindCheckboxClick(e) {
+  const checkbox = e.target;
+  if (checkbox.checked) {
+    // Revert visual check until confirmation modal is accepted
+    checkbox.checked = false;
+    openModal("hivemindModal");
+  } else {
+    // Deactivating immediately without prompt
+    globalHivemindEnabled = false;
+    localStorage.setItem("hiven_global_hivemind", "false");
+    initHivemindState();
+    document.getElementById("globalHivemindSection").style.display = "none";
+    showToast("Mente Colmena desactivada. Modo local aislado activo.");
+    updateStats();
+  }
+}
+
+async function confirmHivemindActivation() {
+  closeModal("hivemindModal");
+  globalHivemindEnabled = true;
+  localStorage.setItem("hiven_global_hivemind", "true");
+  initHivemindState();
+  showToast("¡Te has unido a la Mente Colmena Global!");
+  await fetchGlobalHivemindPatterns();
+  updateStats();
+}
+
+function cancelHivemindActivation() {
+  closeModal("hivemindModal");
+  initHivemindState();
+}
+
+async function fetchGlobalHivemindPatterns() {
+  try {
+    const res = await fetch("data/honeycombs-global.json");
+    if (res.ok) {
+      globalHoneycombs = await res.json();
+      renderGlobalHoneycombsGrid();
+      document.getElementById("globalHivemindSection").style.display = "block";
+      const totalGlobal = Object.values(globalHoneycombs).reduce((acc, curr) => acc + curr.length, 0);
+      document.getElementById("statGlobalPatternsCount").innerText = totalGlobal;
+    }
+  } catch (err) {
+    console.warn("Could not load global honeycombs seed:", err);
+  }
+}
+
+// ==========================================
+// HONEYCOMBS RENDERING & PURGING
+// ==========================================
+
+function renderHoneycombsGrid() {
+  const grid = document.getElementById("honeycombsGrid");
+  if (!grid) return;
+
+  const langs = Object.keys(localHoneycombs);
+  if (langs.length === 0) {
+    grid.innerHTML = `<div class="text-muted" style="grid-column: 1/-1; padding: 20px; text-align: center; background: rgba(0,0,0,0.2); border-radius: 8px;">No hay patrones en la memoria local. El enjambre los registrará automáticamente durante las misiones.</div>`;
+    return;
+  }
+
+  grid.innerHTML = langs.map(lang => {
+    const list = localHoneycombs[lang] || [];
+    if (list.length === 0) return "";
+
+    return `
+      <div class="honeycomb-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+          <div class="honeycomb-lang">🍯 Celda Local: [${lang.toUpperCase()}] (${list.length})</div>
+          <button class="btn btn-sm btn-icon" onclick="purgeLanguageCell('${lang}')" title="Eliminar celda ${lang.toUpperCase()}">✕</button>
+        </div>
+        ${list.map(p => `
+          <div class="pattern-item mt-2" style="background: rgba(0,0,0,0.3); border:1px solid rgba(215,237,4,0.15); border-radius:6px; padding:8px 10px; position:relative;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+              <div style="font-weight:600; font-size:0.85rem; color:var(--text-main);">${p.summary}</div>
+              <button class="btn btn-sm btn-icon" style="color:var(--text-muted); font-size:0.75rem; padding:0 4px;" onclick="deleteLocalPattern('${lang}', '${p.id}')" title="Eliminar este patrón">🗑️</button>
+            </div>
+            <div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;"><b>Do:</b> ${p.doDirective}</div>
+            ${p.dontDirective ? `<div style="font-size:0.72rem; color:#fca5a5; margin-top:2px;"><b>Don't:</b> ${p.dontDirective}</div>` : ""}
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
+              <span class="badge badge-amber" style="font-size:0.65rem;">${p.patternType || "general"}</span>
+              <small class="text-muted" style="font-size:0.7rem;">Usado: ${p.usageCount || 1} veces</small>
+            </div>
+          </div>
+        `).join("")}
+      </div>
+    `;
+  }).join("");
+}
+
+function renderGlobalHoneycombsGrid() {
+  const grid = document.getElementById("globalHoneycombsGrid");
+  if (!grid) return;
+
+  const langs = Object.keys(globalHoneycombs);
+  grid.innerHTML = langs.map(lang => {
+    const list = globalHoneycombs[lang] || [];
+    return `
+      <div class="honeycomb-card" style="border-color: rgba(16, 185, 129, 0.3); background: rgba(16, 185, 129, 0.03);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+          <div class="honeycomb-lang" style="color:var(--accent-green)">🌐 Celda Global: [${lang.toUpperCase()}] (${list.length})</div>
+          <span class="badge" style="background:rgba(16,185,129,0.15); color:var(--accent-green); font-size:0.65rem;">Federado</span>
+        </div>
+        ${list.map(p => `
+          <div class="pattern-item mt-2" style="background: rgba(0,0,0,0.3); border:1px solid rgba(16,185,129,0.2); border-radius:6px; padding:8px 10px;">
+            <div style="font-weight:600; font-size:0.85rem; color:var(--text-main);">${p.summary}</div>
+            <div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;"><b>Do:</b> ${p.doDirective}</div>
+            ${p.dontDirective ? `<div style="font-size:0.72rem; color:#fca5a5; margin-top:2px;"><b>Don't:</b> ${p.dontDirective}</div>` : ""}
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
+              <span class="badge" style="background:rgba(16,185,129,0.15); color:var(--accent-green); font-size:0.65rem;">${p.patternType || "shared"}</span>
+              <small class="text-muted" style="font-size:0.7rem;">Consenso Swarm: ${p.usageCount || 20}+</small>
+            </div>
+          </div>
+        `).join("")}
+      </div>
+    `;
+  }).join("");
+}
+
+function deleteLocalPattern(lang, patternId) {
+  if (!localHoneycombs[lang]) return;
+  localHoneycombs[lang] = localHoneycombs[lang].filter(p => p.id !== patternId);
+  if (localHoneycombs[lang].length === 0) {
+    delete localHoneycombs[lang];
+  }
+  localStorage.setItem("hiven_honeycombs_local", JSON.stringify(localHoneycombs));
+  renderHoneycombsGrid();
+  updateStats();
+  showToast("Patrón eliminado de la memoria local.");
+}
+
+function purgeLanguageCell(lang) {
+  if (confirm(`¿Eliminar toda la celda local de [${lang.toUpperCase()}]?`)) {
+    delete localHoneycombs[lang];
+    localStorage.setItem("hiven_honeycombs_local", JSON.stringify(localHoneycombs));
+    renderHoneycombsGrid();
+    updateStats();
+    showToast(`Celda [${lang.toUpperCase()}] purgada.`);
+  }
+}
+
+function clearHoneycombs() {
+  if (confirm("¿Estás seguro de purgar toda la memoria Honeycombs LOCAL? Esta acción eliminará los patrones descubiertos localmente.")) {
+    localHoneycombs = {};
+    localStorage.removeItem("hiven_honeycombs_local");
+    renderHoneycombsGrid();
+    updateStats();
+    showToast("Toda la memoria local ha sido purgada.");
+  }
+}
+
+function exportHoneycombs() {
+  const exportPayload = {
+    local: localHoneycombs,
+    globalEnabled: globalHivemindEnabled,
+    exportedAt: new Date().toISOString()
+  };
+  const data = JSON.stringify(exportPayload, null, 2);
+  const blob = new Blob([data], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `hiven_honeycombs_${Date.now()}.json`;
+  a.click();
+  showToast("Memoria exportada en JSON.");
+}
+
+function updateStats() {
+  const localCount = Object.values(localHoneycombs).reduce((acc, curr) => acc + curr.length, 0);
+  const globalCount = globalHivemindEnabled ? Object.values(globalHoneycombs).reduce((acc, curr) => acc + curr.length, 0) : 0;
+  
+  const elPat = document.getElementById("statPatternsCount");
+  if (elPat) elPat.innerText = localCount + globalCount;
+
+  const elPr = document.getElementById("statTotalPRs");
+  if (elPr) elPr.innerText = activeSwarms.length;
+}
+
 // Swarm Dispatch
 async function handleDispatchSwarm(e) {
   e.preventDefault();
@@ -214,6 +431,11 @@ function runStepperAnimation(repo, prompt, workers, branch) {
 
   setTimeout(() => {
     log(`[Phase 1] Task Graph planificado en 3 sub-tareas.`);
+    if (globalHivemindEnabled) {
+      log(`[Honeycombs] Mente Colmena Global activa: cargadas directivas federadas.`);
+    } else {
+      log(`[Honeycombs] Memoria local activa.`);
+    }
     log(`[Phase 2] Desplegando ${workers} Kōmbees paralelos con bloques SEARCH/REPLACE...`);
     badge.innerText = `Fase 2: Parallel Coders (${workers} Nodos)`;
     document.getElementById("step2").classList.add("active");
@@ -241,7 +463,7 @@ function runStepperAnimation(repo, prompt, workers, branch) {
 
 function generateWorkflowOnly() {
   const workers = document.getElementById("inputWorkers").value;
-  const yaml = `# Auto-generated by Hiven Swarm Engine V3
+  const yaml = `# Auto-generated by Hiven Swarm Engine V3.2
 name: 🐝 Hiven Autonomous Swarm Execution
 
 on:
@@ -274,7 +496,6 @@ jobs:
   showToast("Workflow YAML copiado al portapapeles");
 }
 
-// Swarms Table
 function renderSwarmsTable() {
   const tbody = document.getElementById("swarmsTableBody");
   if (!tbody) return;
@@ -300,61 +521,4 @@ function renderSwarmsTable() {
 function loadSwarmsHistory() {
   renderSwarmsTable();
   showToast("Inventario actualizado");
-}
-
-// Honeycombs Grid
-function renderHoneycombsGrid() {
-  const grid = document.getElementById("honeycombsGrid");
-  if (!grid) return;
-
-  const langs = Object.keys(honeycombsMemory);
-  if (langs.length === 0) {
-    grid.innerHTML = `<div class="text-muted">No hay patrones en la memoria Honeycombs.</div>`;
-    return;
-  }
-
-  grid.innerHTML = langs.map(lang => {
-    const list = honeycombsMemory[lang] || [];
-    return `
-      <div class="honeycomb-card">
-        <div class="honeycomb-lang">🍯 Celda: [${lang.toUpperCase()}] (${list.length} patrones)</div>
-        ${list.map(p => `
-          <div class="pattern-item mt-2">
-            <div style="font-weight:600; font-size:0.85rem;">${p.summary}</div>
-            <div style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;"><b>Do:</b> ${p.doDirective}</div>
-          </div>
-        `).join("")}
-      </div>
-    `;
-  }).join("");
-}
-
-function exportHoneycombs() {
-  const data = JSON.stringify(honeycombsMemory, null, 2);
-  const blob = new Blob([data], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `hiven_honeycombs_${Date.now()}.json`;
-  a.click();
-  showToast("Memoria Honeycombs exportada");
-}
-
-function clearHoneycombs() {
-  if (confirm("¿Estás seguro de purgar toda la memoria Honeycombs?")) {
-    honeycombsMemory = {};
-    localStorage.removeItem("hiven_honeycombs_local");
-    renderHoneycombsGrid();
-    updateStats();
-    showToast("Memoria Honeycombs purgada");
-  }
-}
-
-function updateStats() {
-  const patCount = Object.values(honeycombsMemory).reduce((acc, curr) => acc + curr.length, 0);
-  const elPat = document.getElementById("statPatternsCount");
-  if (elPat) elPat.innerText = patCount;
-
-  const elPr = document.getElementById("statTotalPRs");
-  if (elPr) elPr.innerText = activeSwarms.length;
 }

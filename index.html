@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=3.1.0">
+  <link rel="stylesheet" href="style.css?v=3.2.0">
   <script>
     if (localStorage.getItem('hiven_github_pat') || sessionStorage.getItem('hiven_github_pat')) {
       document.documentElement.classList.add('is-authenticated-pre');
@@ -48,7 +48,7 @@
       <div class="brand">
         <img src="assets/hiven_logo_v2.png" alt="Hiven Logo" class="brand-logo">
         <div class="brand-info">
-          <div class="brand-title">HIVEN <span class="version-badge">v3.0.0</span></div>
+          <div class="brand-title">HIVEN <span class="version-badge">v3.2.0</span></div>
           <div class="brand-subtitle">Autonomous Swarm Intelligence & Honeycombs Memory</div>
         </div>
       </div>
@@ -191,7 +191,7 @@
             <!-- Activity Terminal -->
             <div class="terminal-box mt-3" id="dashboardTerminal">
               <div class="terminal-line"><span class="term-time">[HIVEN-SYS]</span> Mente enjambre lista. Esperando instrucciones de misión...</div>
-              <div class="terminal-line"><span class="term-time">[HONEYCOMBS]</span> Celdas de memoria cargadas desde .hiven-storage.</div>
+              <div class="terminal-line"><span class="term-time">[HONEYCOMBS]</span> Celdas de memoria cargadas desde Honeycombs Engine ($0 Cost).</div>
             </div>
           </div>
         </section>
@@ -311,26 +311,67 @@
           </div>
         </section>
 
-        <!-- TAB 4: HONEYCOMBS MEMORY -->
+        <!-- TAB 4: HONEYCOMBS MEMORY (DUAL-LEVEL) -->
         <section id="tab-honeycombs" class="tab-pane">
           <div class="section-header">
             <div>
-              <h2>Hiven Honeycombs (Memoria Global Colectiva)</h2>
-              <p class="text-muted">Patrones federados de aprendizaje y directivas aprendidas automáticamente por Hiven.</p>
+              <h2>Hiven Honeycombs (Memoria K/V de Dos Niveles)</h2>
+              <p class="text-muted">Gestión de memoria local aislada y sincronización con la Mente Colmena Global de Terra.</p>
             </div>
             <div class="actions-group">
               <button class="btn btn-secondary btn-sm" onclick="exportHoneycombs()">
                 <span>💾 Exportar JSON</span>
               </button>
               <button class="btn btn-danger btn-sm" onclick="clearHoneycombs()">
-                <span>🗑️ Purgar Memoria</span>
+                <span>🗑️ Purgar Memoria Local</span>
               </button>
             </div>
           </div>
 
-          <!-- Honeycombs Cells Grid -->
+          <!-- LEVEL 2: GLOBAL HIVEMIND CONTROL CARD -->
+          <div class="card hivemind-banner mb-4">
+            <div class="hivemind-header">
+              <div class="hivemind-info">
+                <div class="hivemind-title">
+                  <span class="hivemind-icon">🌐</span>
+                  <h3>Mente Colmena Global (Red Colectiva Terra)</h3>
+                </div>
+                <p class="hivemind-desc">
+                  Comparte automáticamente tus patrones y directivas de código validadas con los demás enjambres de Terra y aliméntate de los patrones globales para alcanzar un <strong>99% de efectividad</strong>.
+                </p>
+              </div>
+              <div class="hivemind-toggle-wrapper">
+                <label class="toggle-switch">
+                  <input type="checkbox" id="checkGlobalHivemind" onchange="handleHivemindCheckboxClick(event)">
+                  <span class="slider"></span>
+                </label>
+                <span id="badgeHivemindStatus" class="status-pill text-muted">Aislado / Solo Local</span>
+              </div>
+            </div>
+            <div class="hivemind-footer mt-3">
+              <small class="text-muted">Patrones Globales Sincronizados: <strong id="statGlobalPatternsCount" style="color:var(--accent-hiven)">0</strong> | Estado: <span id="textHivemindSyncStatus">Desconectado</span></small>
+            </div>
+          </div>
+
+          <!-- LEVEL 1: LOCAL HONEYCOMBS -->
+          <div class="section-sub-header mb-3">
+            <h3>🏠 Nivel 1: Celdas & Patrones Locales (Tu Enjambre)</h3>
+            <p class="text-muted">Memoria privada de tu sesión y repositorio. Puedes purgar celdas completas o eliminar patrones específicos.</p>
+          </div>
+
           <div class="honeycomb-grid" id="honeycombsGrid">
-            <!-- Populated dynamically -->
+            <!-- Populated dynamically with individual delete buttons -->
+          </div>
+
+          <!-- LEVEL 2 DISPLAY: GLOBAL PATTERNS (IF ACTIVE) -->
+          <div id="globalHivemindSection" style="display: none;" class="mt-4">
+            <div class="section-sub-header mb-3">
+              <h3>🌐 Nivel 2: Patrones Federados de la Mente Colmena</h3>
+              <p class="text-muted">Conocimiento colectivo recibido de la red global de Terra.</p>
+            </div>
+            <div class="honeycomb-grid" id="globalHoneycombsGrid">
+              <!-- Populated dynamically when global hivemind is active -->
+            </div>
           </div>
         </section>
 
@@ -350,7 +391,7 @@
               <p>Permite que cualquier desarrollador invoque a Hiven en un Issue o Pull Request simplemente escribiendo un comentario con <code>@hiven</code> o <code>/hiven</code>.</p>
               
               <div class="webhook-endpoint-box mt-3">
-                <label>Endpoint Webhook en Producción:</label>
+                <label>Endpoint Webhook en Producción (Recibe HTTP POST de GitHub):</label>
                 <div class="copy-field">
                   <code>https://hiven-komb-queen.vercel.app/webhooks/github</code>
                   <button class="btn btn-sm btn-secondary" onclick="navigator.clipboard.writeText('https://hiven-komb-queen.vercel.app/webhooks/github'); showToast('Endpoint copiado');">Copiar</button>
@@ -361,8 +402,8 @@
                 <h4>Estado de Activación:</h4>
                 <div class="status-indicator-box">
                   <span class="status-pill active">✓ Gateway Operativo</span>
-                  <span class="status-pill active">✓ Honeycombs K/V Nativo Activo</span>
-                  <span class="status-pill active">✓ Zero-Cost Mode Habilitado</span>
+                  <span class="status-pill active">✓ Honeycombs K/V Nativo Activo ($0)</span>
+                  <span class="status-pill active">✓ Zero-Cost Marginal Mode</span>
                 </div>
               </div>
             </div>
@@ -383,10 +424,8 @@
               <a href="#doc-overview" class="docs-link active">1. Visión General</a>
               <a href="#doc-phases" class="docs-link">2. Pipeline de 4 Fases</a>
               <a href="#doc-selfhealing" class="docs-link">3. Bucle de Auto-Sanación</a>
-              <a href="#doc-diffs" class="docs-link">4. Diffs Quirúrgicos</a>
-              <a href="#doc-honeycombs" class="docs-link">5. Hiven Honeycombs</a>
-              <a href="#doc-cli" class="docs-link">6. Referencia CLI & SDK</a>
-              <a href="#doc-faq" class="docs-link">7. Preguntas Frecuentes</a>
+              <a href="#doc-honeycombs" class="docs-link">4. Hiven Honeycombs (2 Niveles)</a>
+              <a href="#doc-faq" class="docs-link">5. Preguntas Frecuentes</a>
             </div>
 
             <div class="docs-content">
@@ -401,7 +440,7 @@
                 <ul>
                   <li><strong>Fase 0 (Deterministic Extractor):</strong> Inspecciona dependencias y AST sin alucinaciones.</li>
                   <li><strong>Fase 1 (Architect):</strong> Descompone la misión en un grafo acíclico de tareas (Task DAG).</li>
-                  <li><strong>Fase 2 (Parallel Coders):</strong> Nodos Kōmbee concurrentes escriben código usando bloques de búsqueda y reemplazo.</li>
+                  <li><strong>Fase 2 (Parallel Coders):</strong> Nodos Kōmbee concurrentes escriben código usando bloques de búsqueda y reemplazo quirúrgicos.</li>
                   <li><strong>Fase 3 (Shadow Sandbox):</strong> Ejecuta tests unitarios en un contenedor aislado previo a cualquier commit.</li>
                   <li><strong>Fase 4 (Consolidator):</strong> Consolida los parches ganadores y crea la Pull Request oficial.</li>
                 </ul>
@@ -412,8 +451,17 @@
                 <p>Si la Fase 3 detecta que los tests fallan, Hiven extrae el stack trace de error y lo reinyecta automáticamente en un sub-enjambre de corrección (hasta 3-5 intentos) hasta que la suite de pruebas concluya con éxito.</p>
               </article>
 
+              <article id="doc-honeycombs" class="mt-4">
+                <h3>4. Hiven Honeycombs: Dos Niveles</h3>
+                <p>La memoria colectiva opera en dos capas:</p>
+                <ul>
+                  <li><strong>Nivel Local:</strong> Tus patrones y directivas guardadas en tu propia caché y vault. Puedes purgar individualmente cualquier celda.</li>
+                  <li><strong>Mente Colmena Global:</strong> Capa descentralizada donde compartes y recibes directivas probadas de todos los enjambres de Terra para acelerar la resolución de incidencias.</li>
+                </ul>
+              </article>
+
               <article id="doc-faq" class="mt-4">
-                <h3>7. Preguntas Frecuentes (FAQ)</h3>
+                <h3>5. Preguntas Frecuentes (FAQ)</h3>
                 <details class="faq-item">
                   <summary><strong>¿Hiven tiene algún coste de infraestructura mensual?</strong></summary>
                   <p>No. Opera 100% sobre minutos gratuitos de GitHub Actions, almacenamiento en repositorios Git y GitHub Pages.</p>
@@ -431,9 +479,42 @@
     </div>
   </div>
 
+  <!-- HIVEMIND CONFIRMATION MODAL -->
+  <div id="hivemindModal" class="modal">
+    <div class="modal-content" style="max-width: 520px;">
+      <div class="modal-header">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span style="font-size:1.6rem;">🐝🌐</span>
+          <h3 style="color:var(--accent-hiven); font-size:1.2rem;">¿Unirte a la Mente Colmena Global?</h3>
+        </div>
+        <button class="modal-close" onclick="cancelHivemindActivation()">&times;</button>
+      </div>
+      <div class="modal-body" style="text-align:left; font-size:0.88rem; line-height:1.55; color:var(--text-main);">
+        <p style="margin-bottom:12px;">
+          Al activar la <strong>Mente Colmena Global</strong>, tu enjambre compartirá los patrones técnicos aprendidos (Do's & Don'ts) con la red colectiva de Terra y tú también te alimentarás de la memoria global acumulada.
+        </p>
+        <div style="background:rgba(215,237,4,0.08); border:1px solid var(--border-color); border-radius:8px; padding:14px; margin-bottom:14px;">
+          <div style="font-weight:700; color:var(--accent-hiven); margin-bottom:6px;">⚠️ Privacidad & Transparencia:</div>
+          <p style="font-size:0.82rem; color:var(--text-muted);">
+            Esto mejora drásticamente el rendimiento y el aprendizaje al 99%, pero los patrones descubiertos en tus misiones se federarán públicamente en la colmena. Ningún dato sensible (tokens, credenciales o código fuente íntegro) es compartido jamás.
+          </p>
+        </div>
+        <p style="font-size:0.85rem; color:var(--text-muted);">
+          ¿Deseas activar la Mente Colmena Global de Hiven ahora?
+        </p>
+      </div>
+      <div class="modal-footer mt-4" style="display:flex; justify-content:flex-end; gap:10px;">
+        <button class="btn btn-secondary" onclick="cancelHivemindActivation()">Cancelar</button>
+        <button class="btn btn-primary" onclick="confirmHivemindActivation()">
+          <span>✓ Sí, Activar Mente Colmena</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Toast Notification -->
   <div id="toast" class="toast"></div>
 
-  <script src="app.js?v=3.1.0"></script>
+  <script src="app.js?v=3.2.0"></script>
 </body>
 </html>

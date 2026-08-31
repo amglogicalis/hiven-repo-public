@@ -1,0 +1,85 @@
+﻿{
+  "ts": [
+    {
+      "id": "global_ts_01",
+      "patternType": "architecture",
+      "summary": "Modular ES Modules with NodeNext extensions",
+      "doDirective": "Always use explicit .js extension in relative imports for ES2022/NodeNext runtime compatibility.",
+      "dontDirective": "Do not omit file extensions in local TypeScript relative module paths.",
+      "usageCount": 42
+    },
+    {
+      "id": "global_ts_02",
+      "patternType": "testing",
+      "summary": "Isolated Ephemeral Fixture Directories",
+      "doDirective": "Create isolated temp scratch directories for file system test runs to avoid race conditions.",
+      "dontDirective": "Never write unit test outputs to production directories.",
+      "usageCount": 35
+    },
+    {
+      "id": "global_ts_03",
+      "patternType": "robustness",
+      "summary": "Surgical Diff Application with Exact Anchors",
+      "doDirective": "When applying patches, match at least 3 lines of contextual anchor before and after changes.",
+      "dontDirective": "Do not perform greedy multi-line regex replacements without boundary limits.",
+      "usageCount": 28
+    }
+  ],
+  "js": [
+    {
+      "id": "global_js_01",
+      "patternType": "best_practice",
+      "summary": "Zero-Cost Native Serverless Handlers",
+      "doDirective": "Export async handler(req, res) directly without heavy Express wrapper frameworks in serverless functions.",
+      "usageCount": 39
+    },
+    {
+      "id": "global_js_02",
+      "patternType": "architecture",
+      "summary": "Async/Await with Defensive Error Trapping",
+      "doDirective": "Wrap all asynchronous I/O operations in try-catch with specific fallback handling.",
+      "usageCount": 31
+    }
+  ],
+  "py": [
+    {
+      "id": "global_py_01",
+      "patternType": "best_practice",
+      "summary": "Strict Type Annotations and Protocol Classes",
+      "doDirective": "Include typing.Optional, typing.Union, and TypedDict in all function interfaces.",
+      "usageCount": 48
+    },
+    {
+      "id": "global_py_02",
+      "patternType": "performance",
+      "summary": "Generator Pipelines for Large Data Streams",
+      "doDirective": "Yield items lazily using generators instead of building massive in-memory lists.",
+      "usageCount": 26
+    }
+  ],
+  "rs": [
+    {
+      "id": "global_rs_01",
+      "patternType": "performance",
+      "summary": "Zero-Allocation Parsing via Borrowed Slices",
+      "doDirective": "Use &str slices and lifetimes instead of allocating String instances inside inner parsing loops.",
+      "usageCount": 54
+    },
+    {
+      "id": "global_rs_02",
+      "patternType": "robustness",
+      "summary": "Custom Error Enum with thiserror/anyhow",
+      "doDirective": "Represent all domain failure states as distinct enum variants with descriptive messages.",
+      "usageCount": 40
+    }
+  ],
+  "go": [
+    {
+      "id": "global_go_01",
+      "patternType": "concurrency",
+      "summary": "Bounded Worker Pool with Context Cancellation",
+      "doDirective": "Always pass context.Context to goroutines and select on ctx.Done() to prevent goroutine leaks.",
+      "usageCount": 37
+    }
+  ]
+}
