@@ -386,8 +386,60 @@ async function handleDispatchSwarm(e) {
   // Animate Pipeline Stepper
   runStepperAnimation(repo, prompt, workers, branch);
 
+  let prUrl = `https://github.com/${repo}/pull/new/${branch}`;
+  let swarmId = `swarm_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+
+  // 1. Try local REST API backend if running on localhost
+  try {
+    const apiRes = await fetch("/api/v1/swarm/dispatch", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Hiven-Token": currentPat
+      },
+      body: JSON.stringify({
+        repo,
+        instruction: prompt,
+        branch,
+        workers,
+        testCommand: testCmd,
+        retries,
+        dryRun
+      })
+    });
+    if (apiRes.ok) {
+      const data = await apiRes.json();
+      if (data.swarm) {
+        swarmId = data.swarm.swarmId || swarmId;
+        if (data.swarm.pullRequestUrl) prUrl = data.swarm.pullRequestUrl;
+      }
+    }
+  } catch (_) {
+    // Running on static GitHub Pages
+  }
+
+  // 2. If online on GitHub Pages and not dry-run, dispatch to GitHub Actions
+  if (!dryRun && currentPat && repo.includes("/")) {
+    try {
+      await fetch(`https://api.github.com/repos/${repo}/actions/workflows/hiven-swarm.yml/dispatches`, {
+        method: "POST",
+        headers: {
+          "Authorization": `token ${currentPat}`,
+          "Accept": "application/vnd.github.v3+json"
+        },
+        body: JSON.stringify({
+          ref: "main",
+          inputs: {
+            instruction: prompt,
+            branch: branch,
+            workers: String(workers)
+          }
+        })
+      });
+    } catch (_) {}
+  }
+
   // Store run in history
-  const swarmId = `swarm_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
   const runRecord = {
     swarmId,
     repo,
@@ -397,7 +449,7 @@ async function handleDispatchSwarm(e) {
     retries,
     status: "completed",
     selfHealingRounds: 0,
-    prUrl: `https://github.com/${repo}/pull/1`,
+    prUrl,
     date: new Date().toLocaleDateString()
   };
 
