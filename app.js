@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Hiven Studio SPA - Core JavaScript Engine V3.2
  * Autonomous Multi-Agent Swarm & Dual-Level Honeycombs Controller
  */
@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   initHivemindState();
 
   renderHoneycombsGrid();
-  renderSwarmsTable();
+  await loadSwarmsHistory();
   updateStats();
 });
 
@@ -518,7 +518,19 @@ function renderSwarmsTable() {
   `).join("");
 }
 
-function loadSwarmsHistory() {
+async function loadSwarmsHistory() {
+  try {
+    const res = await fetch("data/swarms_history.json");
+    if (res.ok) {
+      const serverSwarms = await res.json();
+      for (const s of serverSwarms) {
+        if (!activeSwarms.some(existing => existing.swarmId === s.swarmId)) {
+          activeSwarms.push(s);
+        }
+      }
+      localStorage.setItem("hiven_swarms_history", JSON.stringify(activeSwarms));
+    }
+  } catch (_) {}
   renderSwarmsTable();
-  showToast("Inventario actualizado");
+  updateStats();
 }

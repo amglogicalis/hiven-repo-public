@@ -1,0 +1,26 @@
+[
+  {
+    "swarmId": "swarm_e2e_simple_1788171995458",
+    "repo": "terra-ecosystem/math-core",
+    "branch": "hiven/feat-math-utils",
+    "prompt": "Implementar MathUtils con factorial, fibonacci y clamp numérico con validación estricta de tipos y límites.",
+    "workers": 2,
+    "retries": 3,
+    "status": "completed",
+    "selfHealingRounds": 0,
+    "prUrl": "https://github.com/terra-ecosystem/math-core/pull/14",
+    "date": "31/8/2026"
+  },
+  {
+    "swarmId": "swarm_e2e_complex_1788171995572",
+    "repo": "terra-ecosystem/async-pipeline",
+    "branch": "hiven/feat-concurrent-queue",
+    "prompt": "Construir un ConcurrentQueue con límite de concurrencia, reintentos exponenciales con jitter y descarte de tareas canceladas.",
+    "workers": 6,
+    "retries": 3,
+    "status": "completed",
+    "selfHealingRounds": 2,
+    "prUrl": "https://github.com/terra-ecosystem/async-pipeline/pull/42",
+    "date": "31/8/2026"
+  }
+]
