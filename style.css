@@ -847,3 +847,193 @@ input:checked + .slider:before {
 
 .mb-3 { margin-bottom: 0.75rem; }
 .mb-4 { margin-bottom: 1.5rem; }
+
+/* ==========================================
+   DOCUMENTATION & ARCHITECTURE GUIDE STYLES
+   ========================================== */
+
+.docs-container {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 2rem;
+  align-items: flex-start;
+  margin-top: 1rem;
+}
+
+@media (max-width: 900px) {
+  .docs-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.docs-sidebar {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1rem 0.75rem;
+  position: sticky;
+  top: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.docs-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.82rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+  font-weight: 500;
+  display: block;
+}
+
+.docs-link:hover, .docs-link.active {
+  color: var(--accent-hiven);
+  background: rgba(215, 237, 4, 0.08);
+  border-left: 3px solid var(--accent-hiven);
+}
+
+.docs-content {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 2rem;
+  line-height: 1.65;
+  color: var(--text-main);
+}
+
+.docs-content h3 {
+  color: var(--accent-hiven);
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(215, 237, 4, 0.15);
+}
+
+.docs-content h4 {
+  color: #ffffff;
+  font-size: 1.05rem;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.docs-content p {
+  font-size: 0.88rem;
+  color: #c5ccc0;
+  margin-bottom: 1rem;
+}
+
+.docs-content ul, .docs-content ol {
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.86rem;
+  color: #b5beb0;
+}
+
+.docs-content li {
+  margin-bottom: 0.4rem;
+}
+
+/* Prompt Comparison Cards */
+.prompt-comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 1.25rem 0;
+}
+
+@media (max-width: 768px) {
+  .prompt-comparison {
+    grid-template-columns: 1fr;
+  }
+}
+
+.prompt-box {
+  padding: 1.15rem;
+  border-radius: var(--radius-md);
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+.prompt-box.bad {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.prompt-box.bad .prompt-header {
+  color: #fca5a5;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.prompt-box.good {
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.prompt-box.good .prompt-header {
+  color: var(--accent-green);
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.prompt-box code {
+  display: block;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 0.75rem;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  margin-top: 0.5rem;
+  color: #e5e7eb;
+  white-space: pre-wrap;
+}
+
+/* Parameter Reference Table */
+.param-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25rem 0;
+  font-size: 0.84rem;
+}
+
+.param-table th {
+  text-align: left;
+  padding: 0.65rem 0.85rem;
+  background: rgba(0, 0, 0, 0.4);
+  color: var(--accent-hiven);
+  border: 1px solid var(--border-color);
+}
+
+.param-table td {
+  padding: 0.65rem 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  vertical-align: top;
+}
+
+.param-table td code {
+  color: var(--accent-hiven);
+  font-weight: 600;
+}
+
+/* Callout Box */
+.callout-box {
+  background: rgba(215, 237, 4, 0.06);
+  border-left: 4px solid var(--accent-hiven);
+  padding: 1rem 1.25rem;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  margin: 1.25rem 0;
+  font-size: 0.85rem;
+}
+
+.callout-box strong {
+  color: var(--accent-hiven);
+}

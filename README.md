@@ -1,4 +1,4 @@
-﻿<p align="center">
+<p align="center">
   <img src="./assets/hiven_logo_v2.png" alt="Hiven Logo" width="150" style="border-radius: 12px; box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);" />
 </p>
 
@@ -137,6 +137,71 @@ const result = await hiven.dispatchSwarm({
 console.log(`Swarm despachado con éxito: ${result.swarmId}`);
 console.log(`Pull Request: ${result.pullRequestUrl}`);
 ```
+
+## ⚙️ Referencia Completa de Parámetros del Despachador
+
+Tanto en la Consola Web como en el CLI (`hiven run`), puedes configurar los siguientes parámetros:
+
+| Parámetro CLI | Control Consola | Tipo / Rango | Por Defecto | Descripción & Mejores Prácticas |
+| :--- | :--- | :--- | :--- | :--- |
+| `--repo` | Repositorio Objetivo | `owner/repo` | *Requerido* | Repositorio de GitHub destino. Requiere permisos de `repo` y `workflow`. |
+| `--prompt` | Instrucción / Misión | Texto libre | *Requerido* | Especificación detallada de la tarea. Debe incluir archivos, entradas, salidas y restricciones. |
+| `--branch` | Rama de Trabajo | String | `hiven/patch-[id]` | Rama donde se subirá el commit. Si se omite, se genera con timestamp. |
+| `--baseBranch` | Rama Base | String | `main` | Rama destino contra la cual se abrirá la Pull Request. |
+| `--workers` | Kōmbees Concurrentes | 1 – 10 | `4` | Nodos en paralelo. **2** para utilidades simples, **4** para features estándar, **6-10** para refactors masivos. |
+| `--test-cmd` | Comando de Test | String | *Opcional* | Comando que el Shadow Sandbox ejecuta para verificar cambios (ej. `npm test`). **Es la brújula del Self-Healing**. |
+| `--retries` | Reintentos Self-Healing | 1, 3, 5 | `3` | Rondas máximas de auto-corrección ante fallos de tests. **3** es el balance óptimo para alcanzar el 99% de éxito. |
+| `--dry-run` | Modo de Ejecución | Boolean | `false` | Si se activa, simula la descomposición y valida diffs en local sin tocar GitHub. |
+
+---
+
+## 🎯 Manual de Buen Prompting para Enjambres
+
+Hiven no es un chatbot conversacional; es un enjambre de síntesis determinista. **Los agentes prosperan cuando les proporcionas criterios de éxito verificables, no intenciones difusas.**
+
+### La Fórmula en 4 Pasos:
+1. **Ubicación & Módulo Objetivo:** Especifica el archivo o directorio a crear o editar (ej. `src/utils/math.ts`).
+2. **Contrato de la Interfaz:** Nombres de funciones, parámetros, tipos esperados y estructura del retorno.
+3. **Casos Límite & Restricciones:** Manejo de excepciones, timeouts, nulos o compatibilidad ESM.
+4. **Criterio de Verificación:** Comando de test unitario o aserciones que deben validarse en el Shadow Sandbox.
+
+### Ejemplos Comparativos:
+
+#### ❌ Mal Prompt (Vago & Ambiguo)
+```text
+Crea un validador de emails y ponle pruebas.
+```
+> *Problema:* No define archivo, estándar regex, si lanza error o retorna boolean, ni casos edge.
+
+#### ✅ Buen Prompt (Específico & Determinista)
+```text
+Crear en src/validators/email.js la función isWorkEmail(email).
+- Debe validar formato RFC 5322 y rechazar dominios gratuitos (gmail, yahoo, hotmail).
+- Retornar { valid: boolean, domain: string, reason?: string }.
+- Si el input no es string, lanzar TypeError.
+- Exportar en ESM y crear suite de tests con al menos 6 casos límite.
+```
+
+---
+
+## 🔌 Hiven Swarm REST API (Compatibilidad con Sphexn)
+
+Al ejecutar `hiven console` o `hiven serve`, se inicia un servidor HTTP con endpoints REST estándar en `http://localhost:7460`:
+
+* **`POST /api/v1/swarm/dispatch`**: Despacha un enjambre autónomo.
+  ```json
+  {
+    "repo": "amglogicalis/mi-app",
+    "instruction": "Implementar módulo de pagos con Stripe",
+    "workers": 4,
+    "testCommand": "npm test",
+    "retries": 3
+  }
+  ```
+* **`GET /api/v1/swarm/:id`**: Consulta en tiempo real el estado, logs de actividad y URL de la Pull Request.
+* **`GET /api/v1/honeycombs/patterns?lang=ts`**: Recupera las directivas heurísticas Do's & Don'ts aprendidas.
+* **`POST /api/v1/honeycombs/patterns`**: Alimenta la memoria colectiva con nuevos patrones validados.
+* **`GET /api/v1/health`**: Estado operativo del motor Hiven y Honeycombs.
 
 ---
 

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -414,8 +414,8 @@
         <section id="tab-docs" class="tab-pane">
           <div class="section-header">
             <div>
-              <h2>Guía de Arquitectura & Documentación Técnica</h2>
-              <p class="text-muted">Manual completo, funcionamiento de las 4 fases, Honeycombs y preguntas frecuentes.</p>
+              <h2>Guía Oficial de Arquitectura, Prompting & Documentación Técnica</h2>
+              <p class="text-muted">Manual exhaustivo de funcionamiento, mejores prácticas, ingeniería de prompts y referencia de parámetros.</p>
             </div>
           </div>
 
@@ -424,51 +424,225 @@
               <a href="#doc-overview" class="docs-link active">1. Visión General</a>
               <a href="#doc-phases" class="docs-link">2. Pipeline de 4 Fases</a>
               <a href="#doc-selfhealing" class="docs-link">3. Bucle de Auto-Sanación</a>
-              <a href="#doc-honeycombs" class="docs-link">4. Hiven Honeycombs (2 Niveles)</a>
-              <a href="#doc-faq" class="docs-link">5. Preguntas Frecuentes</a>
+              <a href="#doc-params" class="docs-link">4. Referencia de Parámetros</a>
+              <a href="#doc-prompting" class="docs-link">5. Manual de Buen Prompting</a>
+              <a href="#doc-honeycombs" class="docs-link">6. Memoria Honeycombs (2 Niveles)</a>
+              <a href="#doc-api" class="docs-link">7. Consumo Externo & Sphexn</a>
+              <a href="#doc-faq" class="docs-link">8. Preguntas Frecuentes (FAQ)</a>
             </div>
 
             <div class="docs-content">
+              <!-- SECTION 1 -->
               <article id="doc-overview">
-                <h3>1. Visión General</h3>
-                <p><strong>Hiven</strong> es el agente de ingeniería de software autónomo multi-agente de coste \$0 del ecosistema Terra. Funciona transformando los runners efímeros de GitHub Actions en un laboratorio de desarrollo neuronal coordinado.</p>
+                <h3>1. Visión General & Filosofía Soberana</h3>
+                <p><strong>Hiven V3</strong> es el motor de ingeniería de software autónomo multi-agente de coste \$0 del ecosistema Terra. Su propósito es resolver prácticamente cualquier tarea de desarrollo (desde utilidades aisladas hasta refactorizaciones complejas de sistemas concurrentes) con una tasa de efectividad real cercana al <strong>99%</strong>.</p>
+                <div class="callout-box">
+                  <strong>Principio Fundamental:</strong> Hiven no es un chatbot que adivina código a ciegas; es un enjambre determinista que descompone tareas en grafos acíclicos (Task DAG), aplica parches quirúrgicos mínimos, valida su propio código en sandboxes efímeros y se auto-corrige ante cualquier error antes de publicar una Pull Request.
+                </div>
               </article>
 
+              <!-- SECTION 2 -->
               <article id="doc-phases" class="mt-4">
                 <h3>2. Pipeline de 4 Fases</h3>
-                <p>El enjambre ejecuta un proceso estricto y determinista:</p>
+                <p>Cada misión despachada atraviesa cinco estados estrictos y trazables:</p>
                 <ul>
-                  <li><strong>Fase 0 (Deterministic Extractor):</strong> Inspecciona dependencias y AST sin alucinaciones.</li>
-                  <li><strong>Fase 1 (Architect):</strong> Descompone la misión en un grafo acíclico de tareas (Task DAG).</li>
-                  <li><strong>Fase 2 (Parallel Coders):</strong> Nodos Kōmbee concurrentes escriben código usando bloques de búsqueda y reemplazo quirúrgicos.</li>
-                  <li><strong>Fase 3 (Shadow Sandbox):</strong> Ejecuta tests unitarios en un contenedor aislado previo a cualquier commit.</li>
-                  <li><strong>Fase 4 (Consolidator):</strong> Consolida los parches ganadores y crea la Pull Request oficial.</li>
+                  <li><strong>Fase 0 (Deterministic Extractor):</strong> Inspecciona la topología del repositorio, paquetes instalados, archivos de configuración (<code>package.json</code>, <code>tsconfig.json</code>, etc.) y árboles sintácticos (AST) sin depender de alucinaciones del modelo.</li>
+                  <li><strong>Fase 1 (Swarm Architect):</strong> Analiza la misión y consulta la memoria Honeycombs para extraer directivas previas. Divide la instrucción en un Grafo de Tareas (Task DAG) con dependencias ordenadas.</li>
+                  <li><strong>Fase 2 (Parallel Coders):</strong> Nodos Kōmbee concurrentes escriben código exclusivamente mediante <strong>bloques quirúrgicos <code>SEARCH/REPLACE</code></strong>. Esto garantiza que nunca se borren imports preexistentes, comentarios ni lógica no relacionada.</li>
+                  <li><strong>Fase 3 (Shadow Sandbox):</strong> Ejecuta de forma aislada las suites de verificación y tests unitarios. Si todos los tests pasan en verde (<code>exit 0</code>), avanza a la Fase 4.</li>
+                  <li><strong>Fase 4 (Consolidator):</strong> Consolida los parches, genera el commit atómico, sube la rama remota y abre la Pull Request oficial en GitHub con un resumen estructurado de cambios.</li>
                 </ul>
               </article>
 
+              <!-- SECTION 3 -->
               <article id="doc-selfhealing" class="mt-4">
                 <h3>3. Bucle de Auto-Sanación (Self-Healing Loop)</h3>
-                <p>Si la Fase 3 detecta que los tests fallan, Hiven extrae el stack trace de error y lo reinyecta automáticamente en un sub-enjambre de corrección (hasta 3-5 intentos) hasta que la suite de pruebas concluya con éxito.</p>
+                <p>El pilar principal que eleva la efectividad de Hiven al 99% es su bucle de auto-recuperación:</p>
+                <p>Si la Fase 3 detecta un fallo de compilación, sintaxis o error en los tests (<code>exit code !== 0</code>), Hiven <strong>no da por perdida la misión ni emite una PR rota</strong>. En su lugar:</p>
+                <ol>
+                  <li>Captura el <code>stderr</code>, el stack trace y las aserciones fallidas de la prueba.</li>
+                  <li>Sintetiza la causa raíz del fallo y la almacena temporalmente como un <code>dontDirective</code> en Honeycombs para no repetir la misma equivocación.</li>
+                  <li>Reinyecta el contexto de error a un sub-enjambre de corrección quirúrgica.</li>
+                  <li>Genera un parche de reparación y repite la prueba en el Sandbox (hasta el número de reintentos configurado).</li>
+                  <li>Una vez que la suite concluye con éxito, guarda el aprendizaje ganador como <code>doDirective</code>.</li>
+                </ol>
               </article>
 
+              <!-- SECTION 4 -->
+              <article id="doc-params" class="mt-4">
+                <h3>4. Referencia de Parámetros del Despachador</h3>
+                <p>A continuación se detallan todos los controles configurables para lanzar misiones con máxima precisión:</p>
+
+                <table class="param-table">
+                  <thead>
+                    <tr>
+                      <th>Parámetro</th>
+                      <th>Tipo / Rango</th>
+                      <th>Por Defecto</th>
+                      <th>Descripción & Mejores Prácticas</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>Repositorio Objetivo</code></td>
+                      <td>String (<code>owner/repo</code>)</td>
+                      <td><em>Requerido</em></td>
+                      <td>Repositorio de GitHub donde se ejecutarán los cambios. Tu GitHub PAT debe tener permisos de lectura/escritura (<code>repo</code> y <code>workflow</code>).</td>
+                    </tr>
+                    <tr>
+                      <td><code>Instrucción / Misión</code></td>
+                      <td>Textarea (Natural Language)</td>
+                      <td><em>Requerido</em></td>
+                      <td>Especificación detallada de la tarea a resolver. Debe incluir contexto del archivo objetivo, entradas, salidas y restricciones técnicas.</td>
+                    </tr>
+                    <tr>
+                      <td><code>Rama de Trabajo</code></td>
+                      <td>String</td>
+                      <td><code>hiven/patch-[id]</code></td>
+                      <td>Rama en la que el enjambre publicará los commits. Si se deja en blanco, Hiven genera automáticamente un identificador único con timestamp.</td>
+                    </tr>
+                    <tr>
+                      <td><code>Rama Base</code></td>
+                      <td>String</td>
+                      <td><code>main</code></td>
+                      <td>Rama de destino contra la cual se abrirá la Pull Request (habitualmente <code>main</code>, <code>master</code> o <code>develop</code>).</td>
+                    </tr>
+                    <tr>
+                      <td><code>Kōmbees Concurrentes</code></td>
+                      <td>Integer (1 a 10)</td>
+                      <td><code>4</code></td>
+                      <td>Nodos trabajadores en paralelo. Usa <strong>2</strong> para módulos pequeños o utilidades simples; <strong>4</strong> para features estándar; y <strong>6 a 10</strong> para refactors multi-archivo masivos.</td>
+                    </tr>
+                    <tr>
+                      <td><code>Comando de Test</code></td>
+                      <td>String (Shell Command)</td>
+                      <td><em>Opcional</em></td>
+                      <td>Comando que el Shadow Sandbox ejecutará para validar los cambios (ej. <code>npm test</code>, <code>pytest</code>, o una línea en Node <code>node -e "..."</code>). <strong>Es la brújula que guía al Self-Healing</strong>.</td>
+                    </tr>
+                    <tr>
+                      <td><code>Reintentos Self-Healing</code></td>
+                      <td>Select (1, 3, 5)</td>
+                      <td><code>3 Reintentos</code></td>
+                      <td>Número máximo de rondas de auto-corrección si los tests fallan. Se recomienda mantenerlo en <strong>3</strong> para garantizar el 99% de éxito sin sobrecostes.</td>
+                    </tr>
+                    <tr>
+                      <td><code>Modo de Ejecución</code></td>
+                      <td>Select (Real / Dry-Run)</td>
+                      <td><code>Despacho Real</code></td>
+                      <td><strong>Despacho Real:</strong> Crea ramas y Pull Request real en GitHub.<br><strong>Simulación Local:</strong> Ejecuta el Task Graph y valida diffs quirúrgicos sin modificar GitHub.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </article>
+
+              <!-- SECTION 5 -->
+              <article id="doc-prompting" class="mt-4">
+                <h3>5. Manual de Buen Prompting para Enjambres Autónomos</h3>
+                <p>La calidad y velocidad de resolución de Hiven dependen directamente de cómo estructures la instrucción. <strong>Los agentes autónomos prosperan cuando les das criterios de éxito verificables, no intenciones difusas.</strong></p>
+
+                <h4>La Fórmula en 4 Pasos de un Prompt de Alto Rendimiento:</h4>
+                <ol>
+                  <li><strong>Ubicación & Módulo Objetivo:</strong> Especifica el archivo o directorio a crear/modificar (ej. <code>src/utils/math.ts</code>).</li>
+                  <li><strong>Contrato de la Interfaz:</strong> Define nombres de funciones, tipos de datos esperados, parámetros y valores de retorno.</li>
+                  <li><strong>Casos Límite & Restricciones:</strong> Manejo de errores (qué excepciones lanzar, timeouts, validación de nulos o strings vacíos).</li>
+                  <li><strong>Criterio de Validación:</strong> Indica qué suite de tests debe acompañar al código.</li>
+                </ol>
+
+                <div class="prompt-comparison">
+                  <div class="prompt-box bad">
+                    <div class="prompt-header">❌ Mal Prompt (Vago & Ambiguo)</div>
+                    <p>Crea un validador de emails y ponle pruebas.</p>
+                    <p class="text-muted" style="font-size:0.76rem;">Problema: No especifica archivo, estándar de regex, si debe lanzar excepción o retornar booleano, ni qué casos edge probar.</p>
+                  </div>
+
+                  <div class="prompt-box good">
+                    <div class="prompt-header">✅ Buen Prompt (Específico & Determinista)</div>
+                    <code>Crear en src/validators/email.js la función isWorkEmail(email).
+- Debe validar formato RFC 5322 y rechazar dominios gratuitos (gmail, yahoo, hotmail).
+- Retornar { valid: boolean, domain: string, reason?: string }.
+- Si el input no es string, lanzar TypeError.
+- Exportar en ESM y crear suite de tests con al menos 6 casos límite.</code>
+                  </div>
+                </div>
+
+                <div class="prompt-comparison mt-3">
+                  <div class="prompt-box bad">
+                    <div class="prompt-header">❌ Mal Prompt (Refactorización)</div>
+                    <p>Optimiza la base de datos y que vaya más rápida.</p>
+                    <p class="text-muted" style="font-size:0.76rem;">Problema: No define qué consultas optimizar ni qué métricas o índices añadir.</p>
+                  </div>
+
+                  <div class="prompt-box good">
+                    <div class="prompt-header">✅ Buen Prompt (Refactorización Quirúrgica)</div>
+                    <code>En src/db/repository.ts, refactorizar getUserSessions(userId):
+- Sustituir la concatenación de queries por un pool con prepared statements.
+- Implementar caché LRU en memoria con TTL de 60 segundos.
+- Mantener exactamente la misma firma y tipo de retorno UserSession[].
+- Ejecutar npm run test:db en el Sandbox.</code>
+                  </div>
+                </div>
+              </article>
+
+              <!-- SECTION 6 -->
               <article id="doc-honeycombs" class="mt-4">
-                <h3>4. Hiven Honeycombs: Dos Niveles</h3>
-                <p>La memoria colectiva opera en dos capas:</p>
+                <h3>6. Hiven Honeycombs: Memoria de Dos Niveles</h3>
+                <p>Honeycombs es el sistema de memoria colectiva de Hiven. No almacena fragmentos de código fuente pesados, sino <strong>reglas heurísticas compactas</strong> indexadas por lenguaje (<code>hive_patterns:{ext}</code>):</p>
                 <ul>
-                  <li><strong>Nivel Local:</strong> Tus patrones y directivas guardadas en tu propia caché y vault. Puedes purgar individualmente cualquier celda.</li>
-                  <li><strong>Mente Colmena Global:</strong> Capa descentralizada donde compartes y recibes directivas probadas de todos los enjambres de Terra para acelerar la resolución de incidencias.</li>
+                  <li><strong><code>doDirective</code>:</strong> Buenas prácticas y patrones de diseño que superaron las pruebas unitarias.</li>
+                  <li><strong><code>dontDirective</code>:</strong> Antipatrones y trampas que provocaron errores en el sandbox, aprendidos durante el bucle de auto-sanación.</li>
+                </ul>
+
+                <h4>Los Dos Niveles de Operación:</h4>
+                <ul>
+                  <li><strong>Nivel 1 (Memoria Local Privada):</strong> Se almacena en tu propia caché y en el repositorio privado <code>.hiven-storage</code>. Te permite inspeccionar cada patrón y purgar de forma granular aquellos que ya no te interesen con el botón <code>🗑️</code>.</li>
+                  <li><strong>Nivel 2 (Mente Colmena Global):</strong> Conexión federada con la red colectiva de Terra. Al activarla mediante el interruptor superior (tras aceptar el modal de confirmación y privacidad), tu enjambre comparte sus directivas aprendidas y se nutre del conocimiento de otros desarrolladores sin exponer jamás credenciales, tokens ni código sensible.</li>
                 </ul>
               </article>
 
+              <!-- SECTION 7 -->
+              <article id="doc-api" class="mt-4">
+                <h3>7. Consumo Externo (SDK TypeScript & Swarm REST API para Sphexn)</h3>
+                <p>Hiven está diseñado para ser consumido como un servicio autónomo tanto por desarrolladores humanos como por otros agentes inteligentes del ecosistema Terra (como <strong>Sphexn</strong>):</p>
+
+                <h4>Opción A: SDK Programático (<code>terra-hiven</code>)</h4>
+                <div class="terminal-box">
+                  <div class="terminal-line"><span class="term-time">npm</span> i terra-hiven</div>
+                </div>
+                <p class="mt-2">En tu código TypeScript o JavaScript:</p>
+                <div class="terminal-box">
+                  <div class="terminal-line">import { Hiven } from "terra-hiven";</div>
+                  <div class="terminal-line">const hiven = new Hiven();</div>
+                  <div class="terminal-line">const res = await hiven.dispatchSwarm({ repo: "org/repo", instruction: "..." });</div>
+                </div>
+
+                <h4 class="mt-3">Opción B: Swarm REST API (HTTP JSON)</h4>
+                <p>Al iniciar el servidor local con <code>hiven console</code> o <code>hiven serve</code>, se habilita la API REST oficial en <code>http://localhost:7460</code>:</p>
+                <ul>
+                  <li><code>POST /api/v1/swarm/dispatch</code>: Despacha un enjambre recibiendo el JSON de configuración.</li>
+                  <li><code>GET /api/v1/swarm/:id</code>: Consulta el estado en tiempo real, rondas de auto-sanación y URL de la PR.</li>
+                  <li><code>GET /api/v1/honeycombs/patterns?lang=ts</code>: Devuelve los Do's & Don'ts aprendidos para TypeScript.</li>
+                  <li><code>GET /api/v1/health</code>: Comprobación de estado operativo del motor.</li>
+                </ul>
+              </article>
+
+              <!-- SECTION 8 -->
               <article id="doc-faq" class="mt-4">
-                <h3>5. Preguntas Frecuentes (FAQ)</h3>
+                <h3>8. Preguntas Frecuentes & Consejos de Producción (FAQ)</h3>
                 <details class="faq-item">
                   <summary><strong>¿Hiven tiene algún coste de infraestructura mensual?</strong></summary>
-                  <p>No. Opera 100% sobre minutos gratuitos de GitHub Actions, almacenamiento en repositorios Git y GitHub Pages.</p>
+                  <p>No. Funciona bajo el modelo de coste marginal $0 de Terra. Utiliza los minutos gratuitos de GitHub Actions, almacenamiento soberano en repositorios Git y GitHub Pages.</p>
                 </details>
                 <details class="faq-item">
-                  <summary><strong>¿Dónde se almacena la memoria Honeycombs?</strong></summary>
-                  <p>Se almacena en tu propio repositorio privado <code>.hiven-storage</code> y en la memoria local de sesión.</p>
+                  <summary><strong>¿Por qué las ejecuciones directas tardan apenas unos segundos?</strong></summary>
+                  <p>Porque la extracción de dependencias y los diffs quirúrgicos se computan en memoria RAM ($O(1)$) y el Shadow Sandbox valida el código en procesos locales efímeros sin la sobrecarga de arranque de máquinas virtuales en la nube.</p>
+                </details>
+                <details class="faq-item">
+                  <summary><strong>¿Qué permisos necesita mi GitHub PAT?</strong></summary>
+                  <p>Requiere exclusivamente los scopes de <code>repo</code> (para crear ramas, commits y Pull Requests) y <code>workflow</code> (para despachar GitHub Actions si usas el modo nube).</p>
+                </details>
+                <details class="faq-item">
+                  <summary><strong>¿Cómo garantizo que Hiven no borre código existente?</strong></summary>
+                  <p>Hiven utiliza bloques de búsqueda y reemplazo contextuales con diffs quirúrgicos (`applySearchReplace`). Nunca reescribe un archivo completo de cero a menos que sea un archivo de nueva creación.</p>
                 </details>
               </article>
             </div>
