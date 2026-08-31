@@ -57,17 +57,20 @@
 
 ### 1. Instalación Global del CLI:
 ```bash
-# Con NPM:
+# Directamente desde el registro público de NPM:
 npm install -g terra-hiven
 
-# Con PNPM:
-pnpm add -g terra-hiven
-
-# Con Yarn:
-yarn global add terra-hiven
+# O instalando el paquete local generado (.tgz):
+npm install -g ./terra-hiven-3.2.0.tgz
 ```
 
-### 2. Ejecución Instantánea sin Instalación previa con `npx`:
+### 2. Publicación del Paquete en NPM:
+El paquete compilado y empaquetado está listo en `c:\mis-proyectos\Terra\hiven\hiven-komb-queen\terra-hiven-3.2.0.tgz`. Para publicarlo en tu cuenta de npm:
+```bash
+npm publish terra-hiven-3.2.0.tgz --access public
+```
+
+### 3. Ejecución Instantánea sin Instalación previa con `npx`:
 ```bash
 # Iniciar la Consola Web local:
 npx terra-hiven console
