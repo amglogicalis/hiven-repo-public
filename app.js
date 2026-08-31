@@ -509,7 +509,7 @@ function renderSwarmsTable() {
     <tr>
       <td><code>${s.swarmId}</code></td>
       <td><b>${s.repo}</b></td>
-      <td><span class="status-pill active">✓ ${s.status}</span></td>
+      <td><span class="status-pill active"><span class="pill-check">✓</span> ${s.status}</span></td>
       <td>${s.prompt.slice(0, 45)}...</td>
       <td>${s.selfHealingRounds} rondas</td>
       <td>${s.date}</td>

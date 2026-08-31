@@ -1,4 +1,4 @@
-﻿:root {
+:root {
   --bg-primary: #080b04;
   --bg-secondary: #0d1208;
   --bg-card: rgba(13, 18, 8, 0.88);
@@ -601,8 +601,15 @@ html.is-authenticated-pre .auth-gate-screen {
 }
 
 .data-table td {
-  padding: 0.75rem 1rem;
+  padding: 0.85rem 1rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  vertical-align: middle;
+}
+
+.data-table th:nth-child(3),
+.data-table td:nth-child(3) {
+  min-width: 140px;
+  white-space: nowrap;
 }
 
 /* Honeycombs Grid */
@@ -655,7 +662,26 @@ html.is-authenticated-pre .auth-gate-screen {
 .mt-4 { margin-top: 1.5rem; }
 .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
 .badge-amber { background: var(--accent-glow); color: var(--accent-hiven); border: 1px solid var(--border-color); }
-.status-pill { padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; background: rgba(215, 237, 4, 0.1); color: var(--accent-hiven); border: 1px solid rgba(215, 237, 4, 0.3); margin-right: 0.5rem; }
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  line-height: 1.1;
+  background: rgba(215, 237, 4, 0.12);
+  color: var(--accent-hiven);
+  border: 1px solid rgba(215, 237, 4, 0.35);
+  box-shadow: 0 0 10px rgba(215, 237, 4, 0.08);
+}
+
+.status-pill .pill-check {
+  font-size: 0.85rem;
+  line-height: 1;
+}
 
 /* ==========================================
    HIVEMIND DUAL-LEVEL STYLES
