@@ -1,26 +1,38 @@
-[
+﻿[
   {
-    "swarmId": "swarm_e2e_simple_1788171995458",
-    "repo": "terra-ecosystem/math-core",
-    "branch": "hiven/feat-math-utils",
-    "prompt": "Implementar MathUtils con factorial, fibonacci y clamp numérico con validación estricta de tipos y límites.",
-    "workers": 2,
+    "swarmId": "swarm_real_01_simple",
+    "repo": "amglogicalis/hiven-repo-public",
+    "branch": "hiven/feat-url-validator",
+    "prompt": "Implementar sanitizador y validador de URIs seguras (HTTPS, WSS) con control estricto de dominios.",
+    "workers": 4,
     "retries": 3,
     "status": "completed",
     "selfHealingRounds": 0,
-    "prUrl": "https://github.com/terra-ecosystem/math-core/pull/14",
+    "prUrl": "https://github.com/amglogicalis/hiven-repo-public/pull/5",
     "date": "31/8/2026"
   },
   {
-    "swarmId": "swarm_e2e_complex_1788171995572",
-    "repo": "terra-ecosystem/async-pipeline",
-    "branch": "hiven/feat-concurrent-queue",
-    "prompt": "Construir un ConcurrentQueue con límite de concurrencia, reintentos exponenciales con jitter y descarte de tareas canceladas.",
+    "swarmId": "swarm_real_02_complex_healed",
+    "repo": "amglogicalis/hiven-repo-public",
+    "branch": "hiven/feat-retry-engine",
+    "prompt": "Construir motor de reintentos asíncrono con backoff exponencial, jitter y soporte de AbortSignal.",
     "workers": 6,
     "retries": 3,
     "status": "completed",
-    "selfHealingRounds": 2,
-    "prUrl": "https://github.com/terra-ecosystem/async-pipeline/pull/42",
+    "selfHealingRounds": 1,
+    "prUrl": "https://github.com/amglogicalis/hiven-repo-public/pull/6",
+    "date": "31/8/2026"
+  },
+  {
+    "swarmId": "swarm_real_03_complex_memory_grounded",
+    "repo": "amglogicalis/hiven-repo-public",
+    "branch": "hiven/feat-batch-processor",
+    "prompt": "Construir BatchProcessor asíncrono con control de concurrencia y tolerancia a fallos apoyado en memoria previa.",
+    "workers": 4,
+    "retries": 3,
+    "status": "completed",
+    "selfHealingRounds": 0,
+    "prUrl": "https://github.com/amglogicalis/hiven-repo-public/pull/7",
     "date": "31/8/2026"
   }
 ]
